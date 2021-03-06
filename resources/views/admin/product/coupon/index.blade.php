@@ -61,7 +61,7 @@ Coupons
     <div class="col-md-7">
         <div class="card">
             <div class="card-header card-info">
-                <h3 class="card-title panel-title float-left"> All Brand </h3>
+                <h3 class="card-title panel-title float-left"> All Coupons </h3>
             </div><!-- end card header-->
             <div class="card-body table-responsive p-0">
                 <table class="table table-head-fixed table-hover">

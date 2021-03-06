@@ -15,7 +15,7 @@ All Product
             <table class="table table-head-fixed table-hover">
                 <thead>
                 <tr>
-                    <th>ID</th>
+                    <th>SL</th>
                     <th>Image</th>
                     <th>Title & Details</th>
                     <th>Price</th>
@@ -24,9 +24,9 @@ All Product
                 </tr>
                 </thead>
                 <tbody>
-                @foreach($product as $data)
+                @foreach($product as $key => $data)
                 <tr>
-                    <td class="align-middle">{{$data->id}}</td>
+                    <td class="align-middle">{{$key + $product->firstItem()}}</td>
                     <td class="align-middle">
                         <?php
                             $fimg = \App\Models\Media::where('id', $data->featured_image)->first();
@@ -63,6 +63,9 @@ All Product
                 @endforeach
                 </tbody>
             </table>
+        </div>
+        <div class="card-footer clearfix">
+            {{$product->links('pagination::bootstrap-4')}}
         </div>
      </div>
 

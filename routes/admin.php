@@ -11,8 +11,11 @@ Route::group([
     Route::get('adminMenu','DashboardController@menu')->name('adminMenu');
     
     //Media
+    Route::get('media/all', 'MediaController@index')->name('media_index');
     Route::post('media/store', 'MediaController@store')->name('media_store');
+    Route::post('media/store/noajax', 'MediaController@storeMedia')->name('media_store_noajax');
     Route::get('media/get', 'MediaController@getMedia')->name('media_get');
+    Route::get('media/delete/{id}', 'MediaController@destroy')->name('media_delete');
 
     //Products
     Route::get('product/all', 'ProductController@index')->name('product_index');
@@ -36,8 +39,9 @@ Route::group([
     Route::get('manage/order', 'ProductOrderController@index')->name('product_order_index');
     Route::get('order/view/{id}', 'ProductOrderController@view')->name('product_order_view');
     Route::get('order/delete/{id}', 'ProductOrderController@destroy')->name('product_order_delete');
+    Route::get('manage/order/filter', 'ProductOrderController@index')->name('product_order_filter');
 
-        //Status Chage
+    //Status Chage
     Route::post('order/payment-status/', 'ProductOrderController@changePaymentStatus')->name('order_change_payment_status');
     Route::post('order/delivery-status/', 'ProductOrderController@changeDeliveryStatus')->name('order_change_delivery_status');
 
@@ -53,7 +57,21 @@ Route::group([
     Route::post('coupon/store', 'CouponController@store')->name('product_coupon_store');
     Route::get('coupon/{id}', 'CouponController@index')->name('product_coupon_edit');
     Route::post('coupon/update', 'CouponController@update')->name('product_coupon_update');
-    Route::get('coupon/delete', 'CouponController@destroy')->name('product_coupon_delete');
+    Route::get('coupon/{id}/delete', 'CouponController@destroy')->name('product_coupon_delete');
+
+    //Attribute
+    Route::get('attribute/all', 'AttributeController@index')->name('product_attribute_index');
+    Route::post('attribute/store', 'AttributeController@store')->name('product_attribute_store');
+    Route::get('attribute/{id}', 'AttributeController@index')->name('product_attribute_edit');
+    Route::post('attribute/update', 'AttributeController@update')->name('product_attribute_update');
+    Route::get('attribute/{id}/delete', 'AttributeController@destroy')->name('product_attribute_delete');
+
+    //Attribute
+    Route::get('attribute-value/all', 'AttributeController@valueindex')->name('product_attribute_value_index');
+    Route::post('attribute-value/store', 'AttributeController@valuestore')->name('product_attribute_value_store');
+    Route::get('attribute-value/{id}', 'AttributeController@valueindex')->name('product_attribute_value_edit');
+    Route::post('attribute-value/update', 'AttributeController@valueupdate')->name('product_attribute_value_update');
+    Route::get('attribute-value/{id}/delete', 'AttributeController@valuedestroy')->name('product_attribute_value_delete');
 
 
 

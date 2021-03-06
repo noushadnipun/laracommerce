@@ -9,11 +9,7 @@
                             <a href="#"><img src="assets/img/logo/logo.png" alt=""></a>
                         </div>
                         <div class="footer_contact">
-                            <p>We are a team of designers and developers that 
-                                create high quality HTML Template, Woocommerce, Shopify Theme.</p>
-                            <p><span>Address</span> The Barn, Ullenhall, Henley in Arden B578 5C, England.</p>
-                            <p><span>Mobile: </span><a href="tel:+123.456.789">+123.456.789</a>  – <a href="tel:+123.456.678">+123.456.678</a> </p>
-                            <p><span>Support: </span><a target="_blank" href="https://hasthemes.com/contact-us/">https://hasthemes.com/contact-us/</a></p>
+                            {{\App\Helpers\WebsiteSettings::settings('footer_content')}}
                         </div>
                     </div>
                 </div>
@@ -54,11 +50,9 @@
                         <h3>Follow Us</h3>
                         <div class="footer_social_link">
                             <ul>
-                                <li><a class="facebook" href="#" title="Facebook"><i class="fa fa-facebook"></i></a></li>
-                                <li><a class="twitter" href="#" title="Twitter"><i class="fa fa-twitter"></i></a></li>
-                                <li><a class="instagram" href="#" title="instagram"><i class="fa fa-instagram"></i></a></li>
-                                <li><a class="linkedin" href="#" title="linkedin"><i class="fa fa-linkedin"></i></a></li>
-                                <li><a class="rss" href="#" title="rss"><i class="fa fa-rss"></i></a></li>
+                                <li><a class="facebook" href=" {{\App\Helpers\WebsiteSettings::settings('fb_url')}}" title="Facebook"><i class="fa fa-facebook"></i></a></li>
+                                <li><a class="twitter" href="{{\App\Helpers\WebsiteSettings::settings('twitter_url')}}" title="Twitter"><i class="fa fa-twitter"></i></a></li>
+                                <li><a class="instagram" href="{{\App\Helpers\WebsiteSettings::settings('instagram_url')}}" title="instagram"><i class="fa fa-instagram"></i></a></li>
                             </ul>
                         </div>
                         <div class="subscribe_form">

@@ -18,7 +18,9 @@
                 <div class="sidebar_banner5">
                     <div class="single_banner">
                         <div class="banner_thumb">
-                            <a href="shop.html"><img src="assets/img/bg/banner22.jpg" alt=""></a>
+                            @foreach(\App\Helpers\WebsiteSettings::homeSliderRight() as $data)
+                            <a href="{{$data->slug}}"><img src="{{App\Models\Media::fileLocation($data->featured_image)}}" alt=""></a>
+                            @endforeach
                         </div>
                     </div>
                 </div>

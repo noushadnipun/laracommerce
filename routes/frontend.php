@@ -1,4 +1,5 @@
 <?php
+
 Route::group([
      'prefix'=> '/', 
      'namespace'=> 'App\Http\Controllers\Frontend', 
@@ -43,6 +44,12 @@ Route::group([
      //Ajax Request
      Route::get('product/quick-view/{id}', 'HomeController@productQuickViewAjax')->name('product_quick_view');
      Route::get('order/quick-view/{id}', 'customerController@orderQuickViewAjax')->name('order_quick_view');
+
+
+     //Filter
+     Route::get('filter/price', 'HomeController@filterByPrice')->name('filter_price');
+     //Search
+     Route::get('search/', 'HomeController@search')->name('search');
 
 
 

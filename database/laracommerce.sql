@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Feb 21, 2021 at 12:07 AM
+-- Generation Time: Mar 06, 2021 at 04:50 PM
 -- Server version: 5.7.24
 -- PHP Version: 7.3.2
 
@@ -98,7 +98,8 @@ CREATE TABLE `categories` (
 --
 
 INSERT INTO `categories` (`id`, `name`, `slug`, `description`, `image`, `parent_id`, `taxonomy_type`, `visibility`, `created_at`, `updated_at`) VALUES
-(1, 'Homepage Slider', 'homepage-slider', NULL, NULL, NULL, 'slider', 1, '2021-02-19 05:27:04', '2021-02-19 05:27:04');
+(1, 'Homepage Slider', 'homepage-slider', NULL, NULL, NULL, 'slider', 1, '2021-02-19 05:27:04', '2021-02-19 05:27:04'),
+(2, 'Slider Right Side Banner', 'slider-right-side-banner', NULL, NULL, NULL, 'slider', 1, '2021-03-06 07:43:51', '2021-03-06 07:43:51');
 
 -- --------------------------------------------------------
 
@@ -121,8 +122,13 @@ CREATE TABLE `frontend_settings` (
 INSERT INTO `frontend_settings` (`id`, `meta_name`, `meta_value`, `created_at`, `updated_at`) VALUES
 (1, 'site_logoimg_id', '3', '2021-02-13 15:25:35', '2021-02-14 08:20:02'),
 (2, 'home_slider', '1', '2021-02-13 15:25:35', '2021-02-19 05:35:09'),
-(3, 'home_product_category', '[\"1\"]', '2021-02-13 15:25:35', '2021-02-19 05:35:09'),
-(4, 'company_phone', '0192', NULL, '2021-02-16 16:50:40');
+(3, 'home_product_category', '[\"1\"]', '2021-02-13 15:25:35', '2021-03-06 09:26:00'),
+(4, 'company_phone', '01923', NULL, '2021-03-06 09:17:48'),
+(5, 'home_slider_right_side_banner', '2', NULL, '2021-03-06 07:47:02'),
+(6, 'footer_content', 'trtrc', NULL, '2021-03-06 09:17:44'),
+(7, 'fb_url', 'facebook.com', NULL, '2021-03-06 09:22:34'),
+(8, 'twitter_url', 'twitter.com', NULL, '2021-03-06 09:26:00'),
+(9, 'instagram_url', 'instagram.com', NULL, '2021-03-06 09:26:00');
 
 -- --------------------------------------------------------
 
@@ -156,7 +162,14 @@ INSERT INTO `medias` (`id`, `user_id`, `original_name`, `filename`, `file_type`,
 (6, 1, 'a', 'brand8-1613688446.jpg', 'b', 'c', 'd', 'e', '2021-02-18 16:47:26', '2021-02-18 16:47:26'),
 (7, 1, 'a', 'brand2-1613690200.jpg', 'b', 'c', 'd', 'e', '2021-02-18 17:16:40', '2021-02-18 17:16:40'),
 (8, 1, 'a', 'ebay-1613732948.png', 'b', 'c', 'd', 'e', '2021-02-19 05:09:08', '2021-02-19 05:09:08'),
-(9, 1, 'a', 'slider1-1613734062.jpg', 'b', 'c', 'd', 'e', '2021-02-19 05:27:42', '2021-02-19 05:27:42');
+(9, 1, 'a', 'slider1-1613734062.jpg', 'b', 'c', 'd', 'e', '2021-02-19 05:27:42', '2021-02-19 05:27:42'),
+(10, 1, 'a', 'slider6-1614240606.jpg', 'b', 'c', 'd', 'e', '2021-02-25 02:10:06', '2021-02-25 02:10:06'),
+(11, 1, 'a', 'ch-progress3-1615046227.png', 'b', 'c', 'd', 'e', '2021-03-06 09:57:07', '2021-03-06 09:57:07'),
+(12, 1, 'a', 'companion-book-physics-1615046329.jpg', 'b', 'c', 'd', 'e', '2021-03-06 09:58:49', '2021-03-06 09:58:49'),
+(13, 1, 'a', 'copaninon-book-zoology-1615046342.jpg', 'b', 'c', 'd', 'e', '2021-03-06 09:59:02', '2021-03-06 09:59:02'),
+(14, 1, 'a', 'manipulation-1-1615046361.jpg', 'b', 'c', 'd', 'e', '2021-03-06 09:59:21', '2021-03-06 09:59:21'),
+(15, 1, 'a', 'download-1615046539.jpg', 'b', 'c', 'd', 'e', '2021-03-06 10:02:19', '2021-03-06 10:02:19'),
+(16, 1, 'a', 'nissan-1615046583.png', 'b', 'c', 'd', 'e', '2021-03-06 10:03:03', '2021-03-06 10:03:03');
 
 -- --------------------------------------------------------
 
@@ -270,7 +283,8 @@ CREATE TABLE `posts` (
 
 INSERT INTO `posts` (`id`, `name`, `slug`, `description`, `featured_image`, `term_type`, `category_id`, `created_at`, `updated_at`) VALUES
 (1, 'About Us', 'about-us', '<p>rtrtrtrtrtr</p>', NULL, 'page', '', '2021-02-16 17:32:41', '2021-02-20 16:08:23'),
-(2, 'Get buy', 'get-buy', NULL, '9', 'slider', '1', '2021-02-19 05:27:56', '2021-02-19 05:28:24');
+(2, 'Get buy', 'get-buy', NULL, '9', 'slider', '1', '2021-02-19 05:27:56', '2021-02-19 05:28:24'),
+(3, 'Slider Right Side Banner', 'https://facebook.com', NULL, NULL, 'slider', '2', '2021-03-06 07:45:11', '2021-03-06 07:45:11');
 
 -- --------------------------------------------------------
 
@@ -331,7 +345,7 @@ CREATE TABLE `product_attributes` (
 --
 
 INSERT INTO `product_attributes` (`id`, `name`, `created_at`, `updated_at`) VALUES
-(1, 'Color', '2021-02-17 22:43:57', '2021-02-17 22:43:57'),
+(1, 'Color', '2021-02-17 22:43:57', '2021-03-05 13:31:48'),
 (2, 'Size', '2021-02-17 22:43:57', '2021-02-17 22:43:57');
 
 -- --------------------------------------------------------
@@ -353,7 +367,7 @@ CREATE TABLE `product_attribute_values` (
 --
 
 INSERT INTO `product_attribute_values` (`id`, `attributes_id`, `value`, `created_at`, `updated_at`) VALUES
-(1, 1, 'Red', NULL, NULL),
+(1, 1, 'Red', NULL, '2021-03-05 13:54:31'),
 (2, 1, 'Green', NULL, NULL),
 (3, 2, 'S', NULL, NULL),
 (4, 2, 'M', NULL, NULL);
@@ -489,6 +503,24 @@ CREATE TABLE `product_orders` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Dumping data for table `product_orders`
+--
+
+INSERT INTO `product_orders` (`id`, `order_code`, `user_id`, `customer_name`, `customer_phone`, `customer_address`, `customer_thana`, `customer_postal_code`, `customer_city`, `customer_country`, `total_amount`, `use_coupone`, `shipping_cost`, `coupone_discount`, `currency`, `tran_id`, `note`, `payment_status`, `payment_type`, `delivery_status`, `shiping_type`, `created_at`, `updated_at`) VALUES
+(1, '#OD-646870614', 2, 'Noushad Nipun', '01823633792', '74, East Tejturi Bazar, Tejgoan', 'Ghatail', '1215', 'Dhaka', 'Bangladesh', 129, '', 120, '', 'BDT', '', NULL, 'Paid', 'Cash On Delivery', 'Pending', NULL, '2021-03-05 12:45:20', '2021-03-05 12:45:20'),
+(2, '#OD-646970614', 2, 'Noushad Nipun', '01823633792', '74, East Tejturi Bazar, Tejgoan', 'Ghatail', '1215', 'Dhaka', 'Bangladesh', 120, '', 120, '', 'BDT', '60427c49d4456', NULL, 'Pending', 'Sslcommerz Paymeny Gateway', 'Pending', NULL, '2021-03-05 12:45:29', '2021-03-05 12:45:29'),
+(3, '#OD-702060430', 2, 'Noushad Nipun', '01823633792', '74, East Tejturi Bazar, Tejgoan', 'Ghatail', '1215', 'Dhaka', 'Bangladesh', 129, '', 120, '', 'BDT', '60427fd6a752a', NULL, 'Pending', 'Sslcommerz Paymeny Gateway', 'Pending', NULL, '2021-03-05 13:00:38', '2021-03-05 13:00:38'),
+(4, '#OD-703140501', 2, 'Noushad Nipun', '01823633792', '74, East Tejturi Bazar, Tejgoan', 'Ghatail', '1215', 'Dhaka', 'Bangladesh', 129, '', 120, '', 'BDT', '6042801a35d4b', NULL, 'Pending', 'Sslcommerz Paymeny Gateway', 'Pending', NULL, '2021-03-05 13:01:46', '2021-03-05 13:01:46'),
+(5, '#OD-705200503', 2, 'Noushad Nipun', '01823633792', '74, East Tejturi Bazar, Tejgoan', 'Ghatail', '1215', 'Dhaka', 'Bangladesh', 138, '', 120, '', 'BDT', '604280989a9ee', NULL, 'Pending', 'Sslcommerz Paymeny Gateway', 'Pending', NULL, '2021-03-05 13:03:52', '2021-03-05 13:03:52'),
+(6, '#OD-705730504', 2, 'Noushad Nipun', '01823633792', '74, East Tejturi Bazar, Tejgoan', 'Ghatail', '1215', 'Dhaka', 'Bangladesh', 138, '', 120, '', 'BDT', '604280a5b3771', NULL, 'Pending', 'Sslcommerz Paymeny Gateway', 'Pending', NULL, '2021-03-05 13:04:05', '2021-03-05 13:04:05'),
+(7, '#OD-712220510', 2, 'Noushad Nipun', '01823633792', '74, East Tejturi Bazar, Tejgoan', 'Ghatail', '1215', 'Dhaka', 'Bangladesh', 138, '', 120, '', 'BDT', '6042823e7a36e', NULL, 'Pending', 'Sslcommerz Paymeny Gateway', 'Pending', NULL, '2021-03-05 13:10:54', '2021-03-05 13:10:54'),
+(8, '#OD-712860511', 2, 'Noushad Nipun', '01823633792', '74, East Tejturi Bazar, Tejgoan', 'Ghatail', '1215', 'Dhaka', 'Bangladesh', 138, '', 120, '', 'BDT', '60428256a6c2a', NULL, 'Pending', 'Sslcommerz Paymeny Gateway', 'Pending', NULL, '2021-03-05 13:11:18', '2021-03-05 13:11:18'),
+(9, '#OD-713040511', 2, 'Noushad Nipun', '01823633792', '74, East Tejturi Bazar, Tejgoan', 'Ghatail', '1215', 'Dhaka', 'Bangladesh', 138, '', 120, '', 'BDT', '60428268bf875', NULL, 'Pending', 'Sslcommerz Paymeny Gateway', 'Pending', NULL, '2021-03-05 13:11:36', '2021-03-05 13:11:36'),
+(10, '#OD-713170511', 2, 'Noushad Nipun', '01823633792', '74, East Tejturi Bazar, Tejgoan', 'Ghatail', '1215', 'Dhaka', 'Bangladesh', 138, '', 120, '', 'BDT', '604282752803f', NULL, 'Pending', 'Sslcommerz Paymeny Gateway', 'Pending', NULL, '2021-03-05 13:11:49', '2021-03-05 13:11:49'),
+(11, '#OD-713220511', 2, 'Noushad Nipun', '01823633792', '74, East Tejturi Bazar, Tejgoan', 'Ghatail', '1215', 'Dhaka', 'Bangladesh', 138, '', 120, '', 'BDT', '6042827a20f4f', NULL, 'Pending', 'Sslcommerz Paymeny Gateway', 'Pending', NULL, '2021-03-05 13:11:54', '2021-03-05 13:11:54'),
+(12, '#OD-713740512', 2, 'Noushad Nipun', '01823633792', '74, East Tejturi Bazar, Tejgoan', 'Ghatail', '1215', 'Dhaka', 'Bangladesh', 138, '', 120, '', 'BDT', '604282869fa84', NULL, 'Pending', 'Sslcommerz Paymeny Gateway', 'Pending', NULL, '2021-03-05 13:12:06', '2021-03-05 13:12:06');
+
 -- --------------------------------------------------------
 
 --
@@ -506,6 +538,23 @@ CREATE TABLE `product_order_details` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `product_order_details`
+--
+
+INSERT INTO `product_order_details` (`id`, `user_id`, `order_id`, `product_id`, `attribute`, `qty`, `price`, `created_at`, `updated_at`) VALUES
+(1, 2, 1, 3, '{\"Size\": [\"M\"], \"Color\": [\"Red\"]}', 1, 9, '2021-03-05 12:45:20', '2021-03-05 12:45:20'),
+(2, 2, 3, 3, '{\"Size\": [\"M\"], \"Color\": [\"Red\"]}', 1, 9, '2021-03-05 13:00:38', '2021-03-05 13:00:38'),
+(3, 2, 4, 3, '{\"Size\": [\"M\"], \"Color\": [\"Red\"]}', 1, 9, '2021-03-05 13:01:46', '2021-03-05 13:01:46'),
+(4, 2, 5, 3, '{\"Size\": [\"M\"], \"Color\": [\"Red\"]}', 2, 18, '2021-03-05 13:03:52', '2021-03-05 13:03:52'),
+(5, 2, 6, 3, '{\"Size\": [\"M\"], \"Color\": [\"Red\"]}', 2, 18, '2021-03-05 13:04:05', '2021-03-05 13:04:05'),
+(6, 2, 7, 3, '{\"Size\": [\"M\"], \"Color\": [\"Red\"]}', 2, 18, '2021-03-05 13:10:54', '2021-03-05 13:10:54'),
+(7, 2, 8, 3, '{\"Size\": [\"M\"], \"Color\": [\"Red\"]}', 2, 18, '2021-03-05 13:11:18', '2021-03-05 13:11:18'),
+(8, 2, 9, 3, '{\"Size\": [\"M\"], \"Color\": [\"Red\"]}', 2, 18, '2021-03-05 13:11:36', '2021-03-05 13:11:36'),
+(9, 2, 10, 3, '{\"Size\": [\"M\"], \"Color\": [\"Red\"]}', 2, 18, '2021-03-05 13:11:49', '2021-03-05 13:11:49'),
+(10, 2, 11, 3, '{\"Size\": [\"M\"], \"Color\": [\"Red\"]}', 2, 18, '2021-03-05 13:11:54', '2021-03-05 13:11:54'),
+(11, 2, 12, 3, '{\"Size\": [\"M\"], \"Color\": [\"Red\"]}', 2, 18, '2021-03-05 13:12:06', '2021-03-05 13:12:06');
 
 -- --------------------------------------------------------
 
@@ -552,9 +601,9 @@ CREATE TABLE `store_settings` (
 INSERT INTO `store_settings` (`id`, `meta_name`, `meta_value`, `created_at`, `updated_at`) VALUES
 (1, 'shipping_type', 'flat_rate', NULL, '2021-02-19 23:52:54'),
 (2, 'shipping_flat_rate', '120', NULL, '2021-02-19 23:30:28'),
-(3, 'ssl_store_id', NULL, NULL, '2021-02-20 15:53:59'),
-(4, 'ssl_store_password', NULL, NULL, '2021-02-20 15:53:59'),
-(5, 'ssl_sandbox_live', 'live', NULL, '2021-02-20 14:55:01');
+(3, 'ssl_store_id', 'icon4602b36900b1e5', NULL, '2021-03-05 13:00:04'),
+(4, 'ssl_store_password', 'icon4602b36900b1e5@ssl', NULL, '2021-03-05 13:11:42'),
+(5, 'ssl_sandbox_live', 'sandbox', NULL, '2021-03-05 13:00:04');
 
 -- --------------------------------------------------------
 
@@ -631,7 +680,7 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id`, `role_id`, `name`, `email`, `email_verified_at`, `phone`, `avatar`, `adress`, `postcode`, `district`, `ip_address`, `password`, `remember_token`, `created_at`, `updated_at`) VALUES
 (1, 1, 'Noushad Nipun', 'system@nipun.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '$2y$10$VA.VNsesx0AK4/6kmvSjcue5mW.LVUQWsSRN/nvvvogM1CZM/8ohG', 'hXUQrCleu2q38hvRkMHSckQNa2Ed47LzKx9PbrSBO4X8WYtfPLKlt4eUvegF', '2021-02-13 15:25:35', '2021-02-13 15:25:35'),
-(2, 3, 'Riptware Web Technolgy', 'riptware@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '$2y$10$SLq9gliPm6uFkyJWlqSMYOzeMO5dXfAUBTYoJOLx0u3u9qhAJKrL.', 'vbGLhHPkF8vv6SiSd0uqinXXmMB9nFMOvipWiSbXbVf5XV2RZAMaMMAw2tCj', '2021-02-14 12:49:20', '2021-02-14 20:32:54');
+(2, 3, 'Riptware Web Technolgy', 'riptware@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '$2y$10$SLq9gliPm6uFkyJWlqSMYOzeMO5dXfAUBTYoJOLx0u3u9qhAJKrL.', 'YcSm8vx6RuhEU0RI3ivwF0TY639fBNoGM1UHF2l124RibhBwfTIjQbCHdHJZ', '2021-02-14 12:49:20', '2021-02-14 20:32:54');
 
 -- --------------------------------------------------------
 
@@ -854,19 +903,19 @@ ALTER TABLE `admin_menu_items`
 -- AUTO_INCREMENT for table `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `frontend_settings`
 --
 ALTER TABLE `frontend_settings`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `medias`
 --
 ALTER TABLE `medias`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `migrations`
@@ -884,7 +933,7 @@ ALTER TABLE `orders`
 -- AUTO_INCREMENT for table `posts`
 --
 ALTER TABLE `posts`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `products`
@@ -932,13 +981,13 @@ ALTER TABLE `product_coupons`
 -- AUTO_INCREMENT for table `product_orders`
 --
 ALTER TABLE `product_orders`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `product_order_details`
 --
 ALTER TABLE `product_order_details`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=62;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `roles`

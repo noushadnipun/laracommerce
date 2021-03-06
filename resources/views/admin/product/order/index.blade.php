@@ -6,9 +6,54 @@ Manage Order
 
 @section('page-content')
 
-<div id="reportBlock"></div>
+<div id="reportBlock" class="d-inline-block"></div>
 
-<?php $totalOrderAmount = 0; ?>
+    <div class="btn btn-app bg-white">
+        Payment Status 
+        <?php $pSts =  request()->payment_status ?>
+        <form method="get" action="{{route('admin_product_order_filter')}}">
+            @csrf
+            <select name="payment_status" id="">
+                <option value="">Show All</option>
+                <option value="Pending" {{$pSts == 'Pending' ? 'selected' : '' }}>Pending</option>
+                <option value="Processing" {{$pSts == 'Processing' ? 'selected' : '' }}>Processing</option>
+                <option value="Paid" {{$pSts == 'Paid' ? 'selected' : '' }}>Paid</option>
+                <option value="Unpaid" {{$pSts == 'Unpaid' ? 'selected' : '' }}>Unpaid</option>
+            </select>
+            <button type="submit" class="btn badge badge-primary btn-primary">Filter</button>
+        </form>
+    </div>
+
+    <div class="btn btn-app bg-white">
+        Delivery Status
+         <?php $dSts =  request()->delivery_status ?>
+        <form method="get" action="{{route('admin_product_order_filter')}}" class="">
+            @csrf
+            <select name="delivery_status" id="">
+                <option value=''>Show All</option>
+                <option value="Pending" {{$dSts == 'Pending' ? 'selected' : '' }}>Pending</option>
+                <option value="on-delivery" {{$dSts == 'on-delivery' ? 'selected' : '' }}>On Delivery</option>
+                <option value="placed" {{$dSts == 'placed' ? 'selected' : '' }}>Placed</option>
+                <option value="canceled" {{$dSts == 'canceled' ? 'selected' : '' }}>Canceled</option>
+            </select>
+            <button type="submit" class="btn badge badge-primary btn-primary">Filter</button>
+        </form>
+    </div>
+    <div class="btn btn-app bg-white">
+         Search By Order Code    
+        <form method="get" action="{{route('admin_product_order_filter')}}" class="">
+            @csrf
+            <input type="text" name="order_code" class="" value="{{request()->order_code}}" placeholder="#OD-">
+            <button type="submit" class="btn badge badge-primary btn-primary">Search</button>
+        </form>
+    </div>
+
+
+<?php 
+
+$totalOrderAmount = 0; 
+$totalPaidAmount = \App\Models\productOrder::where('payment_status', 'Paid')->select('total_amount')->sum('total_amount');
+?>
 
 <div class="card">
     <div class="card-header card-info">
@@ -18,7 +63,7 @@ Manage Order
         <table class="table table-head-fixed table-hover">
             <thead>
             <tr>
-                <th>Order ID</th>
+                <th>SL</th>
                 <th>Order Code</th>
                 <th>Number Of Products</th>
                 <th>Customer</th>
@@ -31,10 +76,10 @@ Manage Order
             </tr>
             </thead>
             <tbody>
-            @foreach($getAllOrder as $data)
+            @foreach($getAllOrder as $key => $data)
             <tr>
                 <td class="align-middle">
-                    {{$data->id}}
+                    {{$key + $getAllOrder->firstItem()}}
                 </td>
                 <td class="align-middle">
                     {{$data->order_code}}
@@ -70,8 +115,11 @@ Manage Order
             </tbody>
         </table>
     </div>
+    <div class="card-footer clearfix">
+        {{$getAllOrder->links('pagination::bootstrap-4')}}
+    </div>
 </div>
-
+      
 <?php function bdtSign($arg){
     return \App\Helpers\Frontend\ProductView::priceSign($arg);
 }
@@ -85,6 +133,7 @@ Manage Order
 <script>
     function Block(){
         let ele = '<div class="btn btn-app bg-success"><i class="fa">{{bdtSign($totalOrderAmount)}}</i> Total Ordered Amount</div>';
+        //ele += '<div class="btn btn-app bg-success"><i class="fa">{{bdtSign($totalPaidAmount)}}</i> Total Paid Amount</div>';
 
         $('#reportBlock').html(ele);
     }

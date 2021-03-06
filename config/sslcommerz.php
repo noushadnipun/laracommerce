@@ -1,6 +1,10 @@
 <?php
 //Custom Clas Define AppServivce Provider
 // SSLCommerz configuration
+$appDomain = \App\Models\StoreSettings::select('meta_value')->where('meta_name', 'ssl_sandbox_live')->first()->meta_value == 'live' ? 'https://securepay.sslcommerz.com' : 'https://sandbox.sslcommerz.com';
+$storeID = \App\Models\StoreSettings::select('meta_value')->where('meta_name', 'ssl_store_id')->first()->meta_value;
+$storePass = \App\Models\StoreSettings::select('meta_value')->where('meta_name', 'ssl_store_password')->first()->meta_value;
+$getConnect = \App\Models\StoreSettings::select('meta_value')->where('meta_name', 'ssl_sandbox_live')->first()->meta_value == 'live' ? false : true;
 return [
     'projectPath' => env('PROJECT_PATH'),
     // For Sandbox, use "https://sandbox.sslcommerz.com"

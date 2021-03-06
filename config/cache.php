@@ -53,6 +53,9 @@ return [
             'driver' => 'file',
             'path' => storage_path('framework/cache/data'),
         ],
+        'none' => [
+            'driver' => 'null',
+        ],
 
         'memcached' => [
             'driver' => 'memcached',

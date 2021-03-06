@@ -54,7 +54,8 @@
         <div class="row h-100 justify-content-center align-items-center">
             <div class="col-md-5">
                 <div class="card">
-                    <img src="{{asset('public/admin/dist/img/logo.png')}}" alt="" class="img-fluid mx-auto" style="width: 413px;">
+                    {{-- <img src="{{asset('public/admin/dist/img/logo.png')}}" alt="" class="img-fluid mx-auto" style="width: 413px;"> --}}
+                    <h2>Admin Login</h2>
                     <div class="card-body">
                         <form class="" method="POST" action="{{ route('login') }}">
                             @csrf
@@ -104,7 +105,7 @@
                         </form>
                     </div>  
                 </div>
-                <p class="text-center p-5" style="font-size: 15px;">Copyright &copy; <?php echo date('Y');?>. All Rights Reserved | Aamarportal.Com </p>
+                <p class="text-center p-5" style="font-size: 15px;">Copyright &copy; <?php echo date('Y');?>. All Rights Reserved | Riptwrae.Com </p>
             </div>
         </div> 
     </div>

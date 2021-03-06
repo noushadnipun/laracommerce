@@ -7,7 +7,7 @@
        <div class="container">
             <div class="row">
                <div class="col-12">
-
+{{-- 
                     <div class="user-actions">
                         <h3> 
                             <i class="fa fa-file-o" aria-hidden="true"></i>
@@ -23,7 +23,7 @@
                                 </form>
                             </div>
                         </div>    
-                    </div>    
+                    </div>     --}}
                </div>
             </div>
             <div class="checkout_form">

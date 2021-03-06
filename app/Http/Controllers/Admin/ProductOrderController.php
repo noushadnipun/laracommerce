@@ -8,8 +8,16 @@ use App\Models\ProductOrder;
 use App\Models\ProductOrderDetails;
 class ProductOrderController extends Controller
 {
-    public function index(){
-        $getAllOrder = ProductOrder::with('user', 'orderDetails')->orderBy('created_at', 'DESC')->get();
+    public function index(Request $request){
+        if($request->payment_status){
+            $getAllOrder = ProductOrder::with('user', 'orderDetails')->where('payment_status', $request->payment_status)->orderBy('created_at', 'DESC')->paginate('20');
+        }elseif($request->delivery_status){
+            $getAllOrder = ProductOrder::with('user', 'orderDetails')->where('delivery_status', $request->delivery_status)->orderBy('created_at', 'DESC')->paginate('20');
+        }elseif($request->order_code){
+            $getAllOrder = ProductOrder::with('user', 'orderDetails')->where('order_code', $request->order_code)->orderBy('created_at', 'DESC')->paginate('20');
+        }else{
+            $getAllOrder = ProductOrder::with('user', 'orderDetails')->orderBy('created_at', 'DESC')->paginate('20');
+        }
         //return $getAllOrder;
         return view ('admin.product.order.index', compact('getAllOrder'));
     }

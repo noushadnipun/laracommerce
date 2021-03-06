@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\StoreSettings;
+use Artisan;
 
 class StoreSettingController extends Controller
 {
@@ -15,6 +16,7 @@ class StoreSettingController extends Controller
     }
     //update
     public function update(Request $request){
+        Artisan::call('optimize');
         $metaName = $request->meta_name;        
         $getAll = StoreSettings::get();
         foreach($metaName as $item){

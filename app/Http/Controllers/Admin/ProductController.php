@@ -15,14 +15,14 @@ class ProductController extends Controller
     {
         if($Id && Request()->routeIs('admin_category_by_product', $Id)){
             $catName = ProductCategory::categoryName($Id);
-            $product = Product::orderBy('created_at', 'desc')->whereRaw("FIND_IN_SET($Id , category_id)")->get();
+            $product = Product::orderBy('created_at', 'desc')->whereRaw("FIND_IN_SET($Id , category_id)")->paginate('20');
 
         }elseif($Id && Request()->routeIs('admin_brand_by_product', $Id)){
             $catName = ProductBrand::brandName($Id);
-            $product = Product::orderBy('created_at', 'desc')->where('brand_id',$Id)->get();
+            $product = Product::orderBy('created_at', 'desc')->where('brand_id',$Id)->paginate('20');
         }else{
             $catName = '';
-            $product = Product::orderBy('created_at', 'desc')->get();
+            $product = Product::orderBy('created_at', 'desc')->paginate('20');
         }
         return view('admin.product.index', compact('product', 'catName'));
     }

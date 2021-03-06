@@ -54,6 +54,8 @@ class CouponController extends Controller
     //Delete
     public function destroy($id)
     {
-        # code...
+        $d = ProductAttribute::find($id);
+        $d->delete();
+        return redirect()->back()->with('success', 'Deleted Successfully');
     }
 }

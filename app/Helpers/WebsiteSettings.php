@@ -50,6 +50,15 @@ class WebsiteSettings {
         return Post::getPostByCat($slider);
     }
 
+      /**
+     * Home Slider 
+     * We are getting value as Category ID From DB
+     */
+    public static function homeSliderRight(){
+        $slider = Self::settings('home_slider_right_side_banner');
+        return Post::getPostByCat($slider);
+    }
+
     /**
      * HomePage Product Show By Category ID
      * 
@@ -57,6 +66,7 @@ class WebsiteSettings {
     public static function homeProductShowCase(){
         return Self::strToArr(Self::settings('home_product_category'));
     }
+
 
 }
 

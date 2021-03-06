@@ -54,5 +54,36 @@ class HomeController extends Controller
         $page = Post::where('slug', $slug)->first();
         return view('frontend.page', compact('page'));
     }
+
+
+    //Price Range Filter
+    public function filterByPrice(Request $request)
+    {
+        $explode = explode('-', $request->amount);
+       
+        $getProduct = Product::whereBetween('regular_price', [$explode[0], $explode[1]])->orWhereBetween('sale_price', [$explode[0], $explode[1]])->paginate('15');
+        $categoryName = null;
+
+        return view('frontend.product.product-category', compact('getProduct', 'categoryName'));
+        
+    }
+    // Search
+    public function search(Request $request)
+    {
+        $searchValue = $request->search;
+        $category_id = $request->select;
+       
+        $getProduct = Product::where('title', 'LIKE', '%'.$searchValue.'%')
+                            ->where('category_id', 'LIKE', '%'.$category_id.'%')
+                                ->paginate('15');
+        
+        // if(!empty($category_id)){
+        //    $getProduct->whereRaw("FIND_IN_SET($category_id, category_id)");
+        // }
+        $categoryName = $searchValue;
+
+        return view('frontend.product.product-category', compact('getProduct', 'categoryName'));
+        
+    }
    
 }

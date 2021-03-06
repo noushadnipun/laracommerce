@@ -46,10 +46,19 @@
 
 
  <li class="nav-item">
-    <a href="{{route('admin_adminMenu')}}" class="nav-link">
+    <a href="{{route('admin_adminMenu')}}" class="nav-link {{ Request()->routeIs('admin_adminMenu*') ? 'active' : ' ' }}">
         <i class="nav-icon far fa-dot-circle font-11"></i>
         <p>
         Menu
+        </p>
+    </a>
+ </li>
+
+ <li class="nav-item">
+    <a href="{{route('admin_media_index')}}" class="nav-link {{ Request()->routeIs('admin_media_index') ? 'active' : ' ' }}">
+        <i class="nav-icon far fa-dot-circle font-11"></i>
+        <p>
+        Media
         </p>
     </a>
  </li>
@@ -101,6 +110,12 @@
             <a href="{{route('admin_product_coupon_index')}}" class="nav-link {{ Request()->routeIs('admin_product_coupon_index') ? 'active' : ' ' }}">
             <i class="nav-icon far fa-dot-circle font-11"></i>
             <p>Coupon</p>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="{{route('admin_product_attribute_index')}}" class="nav-link {{ Request()->routeIs('admin_product_attribute_index') ? 'active' : ' ' }}">
+            <i class="nav-icon far fa-dot-circle font-11"></i>
+            <p>Attribute</p>
             </a>
         </li>
         <li class="nav-item">
