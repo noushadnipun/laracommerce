@@ -4,13 +4,17 @@ namespace Illuminate\Notifications;
 
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Contracts\Translation\HasLocalePreference;
-use Illuminate\Database\Eloquent\Collection as ModelCollection;
+use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Events\NotificationFailed;
 use Illuminate\Notifications\Events\NotificationSending;
 use Illuminate\Notifications\Events\NotificationSent;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Illuminate\Support\Traits\Localizable;
+use Symfony\Component\Mailer\Exception\HttpTransportException;
+use Symfony\Component\Mailer\Exception\TransportException;
+use Throwable;
 
 class NotificationSender
 {
@@ -45,13 +49,19 @@ class NotificationSender
     protected $locale;
 
     /**
+     * Indicates whether a NotificationFailed event has been dispatched.
+     *
+     * @var bool
+     */
+    protected $failedEventWasDispatched = false;
+
+    /**
      * Create a new notification sender instance.
      *
      * @param  \Illuminate\Notifications\ChannelManager  $manager
      * @param  \Illuminate\Contracts\Bus\Dispatcher  $bus
      * @param  \Illuminate\Contracts\Events\Dispatcher  $events
      * @param  string|null  $locale
-     * @return void
      */
     public function __construct($manager, $bus, $events, $locale = null)
     {
@@ -59,12 +69,14 @@ class NotificationSender
         $this->events = $events;
         $this->locale = $locale;
         $this->manager = $manager;
+
+        $this->events->listen(NotificationFailed::class, fn () => $this->failedEventWasDispatched = true);
     }
 
     /**
      * Send the given notification to the given notifiable entities.
      *
-     * @param  \Illuminate\Support\Collection|array|mixed  $notifiables
+     * @param  \Illuminate\Support\Collection|mixed  $notifiables
      * @param  mixed  $notification
      * @return void
      */
@@ -76,18 +88,18 @@ class NotificationSender
             return $this->queueNotification($notifiables, $notification);
         }
 
-        return $this->sendNow($notifiables, $notification);
+        $this->sendNow($notifiables, $notification);
     }
 
     /**
      * Send the given notification immediately.
      *
-     * @param  \Illuminate\Support\Collection|array|mixed  $notifiables
+     * @param  \Illuminate\Support\Collection|mixed  $notifiables
      * @param  mixed  $notification
      * @param  array|null  $channels
      * @return void
      */
-    public function sendNow($notifiables, $notification, array $channels = null)
+    public function sendNow($notifiables, $notification, ?array $channels = null)
     {
         $notifiables = $this->formatNotifiables($notifiables);
 
@@ -134,6 +146,8 @@ class NotificationSender
      * @param  mixed  $notification
      * @param  string  $channel
      * @return void
+     *
+     * @throws \Throwable
      */
     protected function sendToNotifiable($notifiable, $id, $notification, $channel)
     {
@@ -145,7 +159,23 @@ class NotificationSender
             return;
         }
 
-        $response = $this->manager->driver($channel)->send($notifiable, $notification);
+        try {
+            $response = $this->manager->driver($channel)->send($notifiable, $notification);
+        } catch (Throwable $exception) {
+            if (! $this->failedEventWasDispatched) {
+                if ($exception instanceof HttpTransportException) {
+                    $exception = new TransportException($exception->getMessage(), $exception->getCode());
+                }
+
+                $this->events->dispatch(
+                    new NotificationFailed($notifiable, $notification, $channel, ['exception' => $exception])
+                );
+            }
+
+            $this->failedEventWasDispatched = false;
+
+            throw $exception;
+        }
 
         $this->events->dispatch(
             new NotificationSent($notifiable, $notification, $channel, $response)
@@ -162,6 +192,11 @@ class NotificationSender
      */
     protected function shouldSendNotification($notifiable, $notification, $channel)
     {
+        if (method_exists($notification, 'shouldSend') &&
+            $notification->shouldSend($notifiable, $channel) === false) {
+            return false;
+        }
+
         return $this->events->until(
             new NotificationSending($notifiable, $notification, $channel)
         ) !== false;
@@ -186,10 +221,18 @@ class NotificationSender
             foreach ((array) $original->via($notifiable) as $channel) {
                 $notification = clone $original;
 
-                $notification->id = $notificationId;
+                if (! $notification->id) {
+                    $notification->id = $notificationId;
+                }
 
                 if (! is_null($this->locale)) {
                     $notification->locale = $this->locale;
+                }
+
+                $connection = $notification->connection;
+
+                if (method_exists($notification, 'viaConnections')) {
+                    $connection = $notification->viaConnections()[$channel] ?? null;
                 }
 
                 $queue = $notification->queue;
@@ -198,20 +241,31 @@ class NotificationSender
                     $queue = $notification->viaQueues()[$channel] ?? null;
                 }
 
+                $delay = $notification->delay;
+
+                if (method_exists($notification, 'withDelay')) {
+                    $delay = $notification->withDelay($notifiable, $channel) ?? null;
+                }
+
+                $middleware = $notification->middleware ?? [];
+
+                if (method_exists($notification, 'middleware')) {
+                    $middleware = array_merge(
+                        $notification->middleware($notifiable, $channel),
+                        $middleware
+                    );
+                }
+
                 $this->bus->dispatch(
-                    (new SendQueuedNotifications($notifiable, $notification, [$channel]))
-                            ->onConnection($notification->connection)
-                            ->onQueue($queue)
-                            ->delay(is_array($notification->delay) ?
-                                    ($notification->delay[$channel] ?? null)
-                                    : $notification->delay
-                            )
-                            ->through(
-                                array_merge(
-                                    method_exists($notification, 'middleware') ? $notification->middleware() : [],
-                                    $notification->middleware ?? []
-                                )
-                            )
+                    $this->manager->getContainer()->make(SendQueuedNotifications::class, [
+                        'notifiables' => $notifiable,
+                        'notification' => $notification,
+                        'channels' => [$channel],
+                    ])
+                        ->onConnection($connection)
+                        ->onQueue($queue)
+                        ->delay(is_array($delay) ? ($delay[$channel] ?? null) : $delay)
+                        ->through($middleware)
                 );
             }
         }
@@ -227,7 +281,8 @@ class NotificationSender
     {
         if (! $notifiables instanceof Collection && ! is_array($notifiables)) {
             return $notifiables instanceof Model
-                            ? new ModelCollection([$notifiables]) : [$notifiables];
+                ? new EloquentCollection([$notifiables])
+                : [$notifiables];
         }
 
         return $notifiables;

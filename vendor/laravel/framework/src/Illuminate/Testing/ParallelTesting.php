@@ -43,6 +43,13 @@ class ParallelTesting
     protected $setUpTestCaseCallbacks = [];
 
     /**
+     * All of the registered "setUp" test database callbacks.
+     *
+     * @var array
+     */
+    protected $setUpTestDatabaseCallbacks = [];
+
+    /**
      * All of the registered "tearDown" process callbacks.
      *
      * @var array
@@ -60,7 +67,6 @@ class ParallelTesting
      * Create a new parallel testing instance.
      *
      * @param  \Illuminate\Contracts\Container\Container  $container
-     * @return void
      */
     public function __construct(Container $container)
     {
@@ -70,7 +76,7 @@ class ParallelTesting
     /**
      * Set a callback that should be used when resolving options.
      *
-     * @param  \Closure|null  $callback
+     * @param  \Closure|null  $resolver
      * @return void
      */
     public function resolveOptionsUsing($resolver)
@@ -81,7 +87,7 @@ class ParallelTesting
     /**
      * Set a callback that should be used when resolving the unique process token.
      *
-     * @param  \Closure|null  $callback
+     * @param  \Closure|null  $resolver
      * @return void
      */
     public function resolveTokenUsing($resolver)
@@ -109,6 +115,17 @@ class ParallelTesting
     public function setUpTestCase($callback)
     {
         $this->setUpTestCaseCallbacks[] = $callback;
+    }
+
+    /**
+     * Register a "setUp" test database callback.
+     *
+     * @param  callable  $callback
+     * @return void
+     */
+    public function setUpTestDatabase($callback)
+    {
+        $this->setUpTestDatabaseCallbacks[] = $callback;
     }
 
     /**
@@ -168,6 +185,24 @@ class ParallelTesting
     }
 
     /**
+     * Call all of the "setUp" test database callbacks.
+     *
+     * @param  string  $database
+     * @return void
+     */
+    public function callSetUpTestDatabaseCallbacks($database)
+    {
+        $this->whenRunningInParallel(function () use ($database) {
+            foreach ($this->setUpTestDatabaseCallbacks as $callback) {
+                $this->container->call($callback, [
+                    'database' => $database,
+                    'token' => $this->token(),
+                ]);
+            }
+        });
+    }
+
+    /**
      * Call all of the "tearDown" process callbacks.
      *
      * @return void
@@ -202,7 +237,7 @@ class ParallelTesting
     }
 
     /**
-     * Get an parallel testing option.
+     * Get a parallel testing option.
      *
      * @param  string  $option
      * @return mixed
@@ -215,17 +250,17 @@ class ParallelTesting
             return $_SERVER[$option] ?? false;
         };
 
-        return call_user_func($optionsResolver, $option);
+        return $optionsResolver($option);
     }
 
     /**
      * Gets a unique test token.
      *
-     * @return int|false
+     * @return string|false
      */
     public function token()
     {
-        return $token = $this->tokenResolver
+        return $this->tokenResolver
             ? call_user_func($this->tokenResolver)
             : ($_SERVER['TEST_TOKEN'] ?? false);
     }
@@ -233,7 +268,7 @@ class ParallelTesting
     /**
      * Apply the callback if tests are running in parallel.
      *
-     * @param  callable $callback
+     * @param  callable  $callback
      * @return void
      */
     protected function whenRunningInParallel($callback)

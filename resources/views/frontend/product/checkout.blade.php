@@ -154,7 +154,9 @@
                                 </div> 
                                <div class="panel-default">
                                     <input id="payment_defult" name="payment_method" type="radio" data-target="createp_account" value="ssl" />
-                                    <label for="payment_defult" data-toggle="collapse" data-target="#collapsedefult" aria-controls="collapsedefult">Sslcommerz Paymeny Gateway <img src="{{asset('assets/img/icon/sslc.png')}}" alt=""></label>
+                                    <label for="payment_defult" data-toggle="collapse" data-target="#collapsedefult" aria-controls="collapsedefult">
+                                        Sslcommerz Paymeny Gateway
+                                         <img src="{{asset('assets/img/icon/sslc.png')}}" alt=""></label>
 
                                     <div id="collapsedefult" class="collapse one" data-parent="#accordion">
                                         <div class="card-body1">
@@ -172,7 +174,7 @@
                                     <input type="hidden" name="country" value="{{!empty($address) ? $address->country : 'Bangladesh'}}">
                                     <input type="hidden" name="phone" value="{{!empty($address) ? $address->phone : ''}}">
                                     <input type="hidden" name="shippingCost" value='{{$shippingCost}}'>
-                                    <button  type="submit">Proceed to PayPal</button> 
+                                    <button  type="submit">Proceed to Checkout</button> 
                                 </div>    
                             </div> 
                         </form>         

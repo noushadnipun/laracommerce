@@ -3,11 +3,9 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
-use Illuminate\Support\Facades\Auth;
-use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
@@ -23,13 +21,13 @@ class LoginController extends Controller
     */
 
     use AuthenticatesUsers;
+
     /**
      * Where to redirect users after login.
      *
      * @var string
      */
-    //protected $redirectTo = RouteServiceProvider::HOME;
-    protected $redirectTo;
+    protected $redirectTo = '/';
 
     /**
      * Create a new controller instance.
@@ -40,33 +38,40 @@ class LoginController extends Controller
     {
         $this->middleware('guest')->except('logout');
     }
-   
-    //Redirect After Login
-     protected function redirectTo(){
-        if(auth()->user()->role->id == '1') {
-            return route('admin_dashboard');
-        } else if (auth()->user()->role->id == '3') {
-             //return route('home');
-             //return $next($request);
-             //redirect()->back();
-            if(!session()->has('url.intended')){
+
+    /**
+     * The user has been authenticated.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  mixed  $user
+     * @return mixed
+     */
+    protected function authenticated(Request $request, $user)
+    {
+        // Check user role and redirect accordingly
+        if ($user->role && $user->role->id == '1') {
+            return redirect()->route('admin_dashboard');
+        } elseif ($user->role && $user->role->id == '3') {
+            if (!session()->has('url.intended')) {
                 session(['url.intended' => url()->previous()]);
                 return redirect()->to(session()->get('url.intended'));
             }
+            return redirect()->intended('/');
         } else {
-            return '/';
-        } 
+            return redirect('/');
+        }
     }
-    /*
+
+    /**
+     * Show the application's login form.
+     *
+     * @return \Illuminate\View\View
+     */
     public function showLoginForm()
     {
-        if(!session()->has('url.intended'))
-        {
+        if (!session()->has('url.intended')) {
             session(['url.intended' => url()->previous()]);
         }
         return view('auth.login');
     }
-    */
-
-    
 }

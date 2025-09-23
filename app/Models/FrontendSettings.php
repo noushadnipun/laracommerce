@@ -17,7 +17,7 @@ class FrontendSettings extends Model
     public static function frontSetting($arg){
         if(!empty($arg)){
             $get = FrontendSettings::where('meta_name', $arg)->first();
-            return $get->meta_value;
+            return $get?->meta_value;
         } else {
             return '';
         }

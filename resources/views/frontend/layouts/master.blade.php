@@ -29,6 +29,9 @@
     @include('frontend.layouts.footer')
 
     @yield('cusjs')
+    
+    <!-- Image Improvements JS -->
+    <script src="{{asset('/public/frontend/assets/js/image-improvements.js')}}"></script>
  
    <!-- Jquery cdn -->
 

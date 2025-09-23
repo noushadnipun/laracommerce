@@ -54,7 +54,7 @@
         nav: true,
         autoplay: false,
         autoplayTimeout: 8000,
-        items: 5,
+        items: 6,
         margin:20,
         dots:false,
         navText: ['<i class="ion-ios-arrow-left"></i>','<i class="ion-ios-arrow-right"></i>'],
@@ -73,7 +73,7 @@
 				items:4,
 			},
             1200:{
-				items:5,
+                items:6,
 			},
 
 
@@ -84,8 +84,8 @@
     $('.product_slick_column5').slick({
         centerMode: true,
         centerPadding: '0',
-        slidesToShow: 5,
-        rows: 2,
+        slidesToShow: 6,
+		rows: 1,
         prevArrow:'<button class="prev_arrow"><i class="ion-ios-arrow-left"></i></button>',
         nextArrow:'<button class="next_arrow"><i class="ion-ios-arrow-right"></i></button>', 
         responsive:[
@@ -113,8 +113,8 @@
             {
               breakpoint: 1200,
               settings: {
-                slidesToShow: 4,
-                  slidesToScroll: 4,
+                slidesToShow: 6,
+                  slidesToScroll: 6,
               }
             },
         ]
@@ -472,23 +472,23 @@
         nav: true,
         autoplay: false,
         autoplayTimeout: 8000,
-        items: 4,
-        margin:15,
+        items: 5,
+        margin:10,
         dots:false,
         navText: ['<i class="fa fa-angle-left"></i>','<i class="fa fa-angle-right"></i>'],
         responsiveClass:true,
 		responsive:{
 				0:{
-				items:1,
-			},
-            320:{
-				items:2,
-			},
-            992:{
 				items:3,
 			},
-            1200:{
+            320:{
 				items:4,
+			},
+            992:{
+				items:5,
+			},
+            1200:{
+				items:6,
 			},
 
 

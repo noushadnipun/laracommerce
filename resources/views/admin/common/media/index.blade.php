@@ -38,10 +38,12 @@ Medias
                     <div class="row">
                         @foreach($media as $item)
                         <div class="product-images col-md-2 col-3" style="background: #f2f2f2;">
-                            <a href="{{asset('/public/uploads/images/').'/'. $item->filename}}" data-toggle="lightbox" data-title="{{$item->filename}}" data-gallery="gallery">
-                                <img src="{{asset('/public/uploads/images/').'/'. $item->filename}}" class="media img-fluid mb-2" alt="{{$item->filename}}"/>
-                                <a href="{{route('admin_media_delete', $item->id)}}" class="remove"><span class="fa fa-trash"></span></a>
-                            </a>
+                            @if(!empty($item->filename))
+                                <a href="{{asset('/public/uploads/images/').'/'. $item->filename}}" data-toggle="lightbox" data-title="{{$item->filename}}" data-gallery="gallery">
+                                    <img src="{{asset('/public/uploads/images/').'/'. $item->filename}}" class="media img-fluid mb-2" alt="{{$item->filename}}"/>
+                                    <a href="{{route('admin_media_delete', $item->id)}}" class="remove"><span class="fa fa-trash"></span></a>
+                                </a>
+                            @endif
                         </div>
                         @endforeach
                     </div>

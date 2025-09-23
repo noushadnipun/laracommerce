@@ -54,7 +54,12 @@
                                                         <i class="fa fa-refresh"></i>
                                                     </a>
                                                 </td>
-                                                <td class="product_thumb"><a href="#"><img src="{{App\Models\Media::fileLocation($details['featured_image'])}}" alt=""></a></td>
+                                                <td class="product_thumb">
+                                                    @php $img = \App\Models\Product::imageUrlById($details['id'] ?? null); @endphp
+                                                    <a href="{{route('frontend_single_product', $details['slug'])}}">
+                                                        <img src="{{ $img }}" alt="{{ $details['name'] }}" style="width:80px;height:80px;object-fit:cover;border-radius:6px;">
+                                                    </a>
+                                                </td>
                                                 <td class="product_name">
                                                     <a href="{{route('frontend_single_product', $details['slug'])}}">
                                                         {{ $details['name'] }}

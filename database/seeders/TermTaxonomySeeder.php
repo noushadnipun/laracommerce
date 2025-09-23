@@ -17,13 +17,23 @@ class TermTaxonomySeeder extends Seeder
     {
         $termTaxonomy = [
             [
-               'name'=>'Categories',
-               'slug'=>'slider',
-               'term_type'=>'slider',
+                'id' => 1,
+                'name' => 'Categories',
+                'slug' => 'slider',
+                'type' => null,
+                'term_type' => 'slider',
+                'created_at' => '2021-02-13 15:25:35',
+                'updated_at' => '2021-02-13 15:25:35',
             ],
         ];
-        foreach ($termTaxonomy as $key => $value) {
-            TermTaxonomy::create($value);
+        
+        foreach ($termTaxonomy as $term) {
+            TermTaxonomy::updateOrCreate(
+                ['id' => $term['id']],
+                $term
+            );
         }
+
+        $this->command->info('✅ Term Taxonomies seeded successfully!');
     }
 }

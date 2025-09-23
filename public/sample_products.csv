@@ -1,0 +1,14 @@
+Title,Code,Description,Short_Description,Regular_Price,Sale_Price,Purchase_Price,Total_Stock,Category_ID,Brand_ID,Shipping_Type,Shipping_Cost,Visibility,Refundable,Featured_Image,Gallery_Images,Remote_Images
+iPhone 15 Pro,IPH15P,"Latest iPhone Pro with advanced features and A17 Pro chip","New iPhone Pro with advanced camera system",1200,1100,800,50,1,1,0,0,1,1,iphone15pro.jpg,"iphone15_1.jpg,iphone15_2.jpg,iphone15_3.jpg","https://example.com/iphone15.jpg,https://example.com/iphone15_2.jpg"
+Samsung Galaxy S24,SAMS24,"Samsung flagship smartphone with AI features","Galaxy S24 with advanced AI capabilities",1000,950,600,30,1,2,1,10,1,1,samsung_s24.jpg,"samsung_1.jpg,samsung_2.jpg","https://example.com/samsung.jpg"
+MacBook Pro 15",MBP15,"Apple MacBook Pro laptop with M3 chip","MacBook Pro with M3 processor",2000,1800,1500,15,2,1,0,0,1,1,macbook_pro.jpg,"macbook_1.jpg,macbook_2.jpg","https://example.com/macbook.jpg"
+Nike Air Max 270,NAIR270,"Comfortable running shoes with Air Max technology","Nike Air Max running shoes",150,120,80,100,3,3,1,5,1,1,nike_airmax.jpg,"nike_1.jpg,nike_2.jpg","https://example.com/nike.jpg"
+Adidas Ultraboost 22,ADUB22,"High-performance running shoes with Boost technology","Adidas Ultraboost running shoes",180,160,100,75,3,4,1,5,1,1,adidas_ultraboost.jpg,"adidas_1.jpg,adidas_2.jpg","https://example.com/adidas.jpg"
+Sony WH-1000XM5,SONYWH5,"Premium noise-canceling headphones","Sony wireless headphones with noise cancellation",400,350,250,25,1,5,0,0,1,1,sony_headphones.jpg,"sony_1.jpg,sony_2.jpg","https://example.com/sony.jpg"
+Dell XPS 13,DELLXPS13,"Ultrabook laptop with 13-inch display","Dell XPS ultrabook",1200,1100,900,20,2,6,1,15,1,1,dell_xps.jpg,"dell_1.jpg,dell_2.jpg","https://example.com/dell.jpg"
+Canon EOS R5,CANONR5,"Professional mirrorless camera with 45MP sensor","Canon professional camera",3500,3200,2800,10,4,7,1,20,1,1,canon_eos.jpg,"canon_1.jpg,canon_2.jpg","https://example.com/canon.jpg"
+
+
+
+
+

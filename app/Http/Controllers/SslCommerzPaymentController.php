@@ -161,8 +161,7 @@ class SslCommerzPaymentController extends Controller
 
     public function success(Request $request)
     {
-        echo "Transaction is Successful";
-
+        // Avoid echo; handle via redirects and flash messages
         $tran_id = $request->input('tran_id');
         $amount = $request->input('amount');
         $currency = $request->input('currency');
@@ -186,8 +185,8 @@ class SslCommerzPaymentController extends Controller
                 $update_product = DB::table('orders')
                     ->where('transaction_id', $tran_id)
                     ->update(['status' => 'Processing']);
-
-                echo "<br >Transaction is successfully Completed";
+                return redirect()->route('frontend_checkout_index')
+                    ->with('success', 'Payment successful. Your order is being processed.');
             } else {
                 /*
                 That means IPN did not work or IPN URL was not set in your merchant panel and Transation validation failed.
@@ -196,16 +195,19 @@ class SslCommerzPaymentController extends Controller
                 $update_product = DB::table('orders')
                     ->where('transaction_id', $tran_id)
                     ->update(['status' => 'Failed']);
-                echo "validation Fail";
+                return redirect()->route('frontend_checkout_index')
+                    ->with('error', 'Payment validation failed. Please contact support.');
             }
         } else if ($order_detials->status == 'Processing' || $order_detials->status == 'Complete') {
             /*
              That means through IPN Order status already updated. Now you can just show the customer that transaction is completed. No need to udate database.
              */
-            echo "Transaction is successfully Completed";
+            return redirect()->route('frontend_checkout_index')
+                ->with('success', 'Payment already completed.');
         } else {
             #That means something wrong happened. You can redirect customer to your product page.
-            echo "Invalid Transaction";
+            return redirect()->route('frontend_checkout_index')
+                ->with('error', 'Invalid transaction.');
         }
 
 
@@ -220,14 +222,17 @@ class SslCommerzPaymentController extends Controller
             ->select('transaction_id', 'status', 'currency', 'amount')->first();
 
         if ($order_detials->status == 'Pending') {
-            $update_product = DB::table('orders')
+            DB::table('orders')
                 ->where('transaction_id', $tran_id)
                 ->update(['status' => 'Failed']);
-            echo "Transaction is Falied";
+            return redirect()->route('frontend_checkout_index')
+                ->with('error', 'Payment failed. Please try again.');
         } else if ($order_detials->status == 'Processing' || $order_detials->status == 'Complete') {
-            echo "Transaction is already Successful";
+            return redirect()->route('frontend_checkout_index')
+                ->with('success', 'Payment already completed.');
         } else {
-            echo "Transaction is Invalid";
+            return redirect()->route('frontend_checkout_index')
+                ->with('error', 'Invalid transaction.');
         }
 
     }
@@ -241,14 +246,17 @@ class SslCommerzPaymentController extends Controller
             ->select('transaction_id', 'status', 'currency', 'amount')->first();
 
         if ($order_detials->status == 'Pending') {
-            $update_product = DB::table('orders')
+            DB::table('orders')
                 ->where('transaction_id', $tran_id)
                 ->update(['status' => 'Canceled']);
-            echo "Transaction is Cancel";
+            return redirect()->route('frontend_checkout_index')
+                ->with('error', 'Payment canceled.');
         } else if ($order_detials->status == 'Processing' || $order_detials->status == 'Complete') {
-            echo "Transaction is already Successful";
+            return redirect()->route('frontend_checkout_index')
+                ->with('success', 'Payment already completed.');
         } else {
-            echo "Transaction is Invalid";
+            return redirect()->route('frontend_checkout_index')
+                ->with('error', 'Invalid transaction.');
         }
 
 

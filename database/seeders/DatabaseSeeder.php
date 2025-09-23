@@ -25,8 +25,16 @@ class DatabaseSeeder extends Seeder
         $this->call(TermsSeeder::class);
         //Term Taxonomy
         $this->call(TermTaxonomySeeder::class);
-        //Role
-        $this->call(RoleSeeder::class);
+        //Role & Permissions
+        $this->call(RolePermissionSeeder::class);
+        
+        //Ecommerce Data
+        $this->call(ProductCategorySeeder::class);
+        $this->call(ProductBrandSeeder::class);
+        // Core ecommerce seeds only
+        $this->call(StoreSettingsSeeder::class);
+        $this->call(ProductCouponSeeder::class);
+        
         //User Create
         $this->call(CreateUsersSeeder::class);
     }

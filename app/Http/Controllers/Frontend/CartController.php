@@ -8,11 +8,13 @@ use Auth;
 use App\Models\ProductCart;
 use App\Models\Product;
 use App\Models\ProductCoupon;
+use App\Helpers\Cart\CartHelper;
 
 class CartController extends Controller
 {
     public function index(){
-        return view('frontend.product.cart');
+        $cart = CartHelper::getCartSummary();
+        return view('frontend.product.cart', compact('cart'));
     }
 
     /**
@@ -53,11 +55,31 @@ class CartController extends Controller
      */
 
     public function store(Request $request){
-        $product = Product::where('id', $request->product_id)->first();
+        $product = Product::with('inventory')->where('id', $request->product_id)->first();
+        
+        if(!$product){
+            if ($request->expectsJson() || $request->ajax()) {
+                return response()->json(['success' => false, 'message' => 'Product not found'], 404);
+            }
+            abort(404);
+        }
+
         $id = $product->id;
 
-        if(!$product){
-            abort(404);
+        // Check stock availability
+        $requestedQuantity = !empty($request->quantity) ? (int)$request->quantity : 1;
+        if ($product->isOutOfStock()) {
+            if ($request->expectsJson() || $request->ajax()) {
+                return response()->json(['success' => false, 'message' => 'This product is currently out of stock.']);
+            }
+            return redirect()->back()->with('error', 'This product is currently out of stock.');
+        }
+        
+        if ($product->inventory && $product->inventory->current_stock < $requestedQuantity) {
+            if ($request->expectsJson() || $request->ajax()) {
+                return response()->json(['success' => false, 'message' => 'Only ' . $product->inventory->current_stock . ' items available in stock.']);
+            }
+            return redirect()->back()->with('error', 'Only ' . $product->inventory->current_stock . ' items available in stock.');
         }
         $cart = session()->get('cart');
         // if cart is empty then this the first product
@@ -71,9 +93,17 @@ class CartController extends Controller
                   'qty' => !empty($request->quantity) ? $request->quantity : '1',
                   'price' => !empty($product->sale_price) ? $product->sale_price : $product->regular_price,
                   'featured_image' => $product->featured_image,
+                  'image_url' => $product->getFeaturedImageUrl(),
                 ],
             ];
             session()->put('cart', $cart);
+            
+            // Track cart add
+            $product->trackCartAdd();
+            
+            if ($request->expectsJson() || $request->ajax()) {
+                return response()->json(['success' => true, 'message' => 'Product added to cart successfully!']);
+            }
             return redirect()->back()->with('success', 'Product added to cart successfully!');
         }
        
@@ -93,12 +123,17 @@ class CartController extends Controller
                     'qty' => !empty($request->quantity) ? $request->quantity : '1',
                     'price' => !empty($product->sale_price) ? $product->sale_price : $product->regular_price,
                     'featured_image' => $product->featured_image,
+                  'image_url' => $product->getFeaturedImageUrl(),
                 ];
             } else{
                 $cart[$id]['qty']++;
                 $cart[$id]['attribute'] = $request['attribute'];
             } 
             session()->put('cart', $cart);
+            
+            if ($request->expectsJson() || $request->ajax()) {
+                return response()->json(['success' => true, 'message' => 'Product added to cart successfully!']);
+            }
             return redirect()->back()->with('success', 'Product added to cart successfully!');
            
         }
@@ -117,6 +152,10 @@ class CartController extends Controller
         ];
         
         session()->put('cart', $cart);
+        
+        if ($request->expectsJson() || $request->ajax()) {
+            return response()->json(['success' => true, 'message' => 'Product added to cart successfully!']);
+        }
         return redirect()->back()->with('success', 'Product added to cart successfully!');
     }
 
@@ -126,9 +165,32 @@ class CartController extends Controller
     {
         if($request->id)
         {
-            $product = Product::where('id', $request->id)->first();
+            $product = Product::with('inventory')->where('id', $request->id)->first();
+            
+            if (!$product) {
+                if ($request->expectsJson() || $request->ajax()) {
+                    return response()->json(['success' => false, 'message' => 'Product not found']);
+                }
+                return redirect()->back()->with('error', 'Product not found');
+            }
+
+            // Check stock availability
+            if ($product->isOutOfStock()) {
+                if ($request->expectsJson() || $request->ajax()) {
+                    return response()->json(['success' => false, 'message' => 'This product is currently out of stock.']);
+                }
+                return redirect()->back()->with('error', 'This product is currently out of stock.');
+            }
+            
+            if ($product->inventory && $product->inventory->current_stock < $request->quantity) {
+                $msg = 'Only ' . $product->inventory->current_stock . ' items available in stock.';
+                if ($request->expectsJson() || $request->ajax()) {
+                    return response()->json(['success' => false, 'message' => $msg]);
+                }
+                return redirect()->back()->with('error', $msg);
+            }
+
             $cart = session()->get('cart');
-            //$cart[$request->id]["quantity"] = $request->quantity;
             $cart[$request->id] = [
                  'id' => $product->id,
                 'name' => $product->title,
@@ -139,17 +201,42 @@ class CartController extends Controller
                 'featured_image' => $product->featured_image,
             ];
             session()->put('cart', $cart);
-            session()->flash('success', 'Cart updated successfully');
-            //return redirect()->back()->with('success', 'Cart updated successfully');
+            if ($request->expectsJson() || $request->ajax()) {
+                return response()->json(['success' => true, 'message' => 'Cart updated successfully']);
+            }
+            return redirect()->route('frontend_cart_index')->with('success', 'Cart updated successfully');
         }
+        if ($request->expectsJson() || $request->ajax()) {
+            return response()->json(['success' => false, 'message' => 'Invalid request']);
+        }
+        return redirect()->route('frontend_cart_index');
     }
     //Update Cart As a Multiple Product
     public function multipleUpdate(Request $request){
         $productID = $request->id;
         $pId = $request->pid;
         $productQuantity = $request->qty;
+        $errors = [];
+        
         foreach($productQuantity as $key => $quantity){
-            $product = Product::where('id', $pId[$key])->first();
+            $product = Product::with('inventory')->where('id', $pId[$key])->first();
+            
+            if (!$product) {
+                $errors[] = "Product not found";
+                continue;
+            }
+
+            // Check stock availability
+            if ($product->isOutOfStock()) {
+                $errors[] = "{$product->title} is currently out of stock.";
+                continue;
+            }
+            
+            if ($product->inventory && $product->inventory->current_stock < $quantity) {
+                $errors[] = "Only {$product->inventory->current_stock} items available for {$product->title}.";
+                $quantity = $product->inventory->current_stock; // Limit to available stock
+            }
+
             $cart = session()->get('cart');
             $cart[$productID[$key]] = [
                  'id' => $product->id,
@@ -162,6 +249,11 @@ class CartController extends Controller
             ];
             session()->put('cart', $cart);
         };
+        
+        if (!empty($errors)) {
+            return redirect()->back()->with('error', implode(' ', $errors));
+        }
+        
         return redirect()->back()->with('success', 'Cart updated successfully');
     }
 
@@ -174,8 +266,15 @@ class CartController extends Controller
                 unset($cart[$request->id]);
                 session()->put('cart', $cart);
             }
-            session()->flash('delete', 'Product removed successfully from cart');
+            if ($request->expectsJson() || $request->ajax()) {
+                return response()->json(['success' => true, 'message' => 'Product removed successfully from cart']);
+            }
+            return redirect()->route('frontend_cart_index')->with('delete', 'Product removed successfully from cart');
         }
+        if ($request->expectsJson() || $request->ajax()) {
+            return response()->json(['success' => false, 'message' => 'Invalid request'], 400);
+        }
+        return redirect()->route('frontend_cart_index');
     }
 
     /**

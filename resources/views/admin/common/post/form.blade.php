@@ -104,7 +104,7 @@ Add New {{$term_name}}
                                 <?php
                                     $fimg = \App\Models\Media::where('id', $post->featured_image)->first();
                                 ?>
-                                @if(!empty($fimg->id))
+                                @if(!empty($fimg) && !empty($fimg->id))
                                     <div class="product-img product-images col-md-2 col-3">
                                         <input type="hidden" name="{{$term_slug}}img_id" value="{{$fimg->id}}">
                                         <img class="img-fluid" src="{{asset('/public/uploads/images/').'/'.$fimg->filename}}">

@@ -2,9 +2,10 @@
 
 namespace Illuminate\Database;
 
-use Doctrine\DBAL\Types\Type;
 use Faker\Factory as FakerFactory;
 use Faker\Generator as FakerGenerator;
+use Illuminate\Contracts\Database\ConcurrencyErrorDetector as ConcurrencyErrorDetectorContract;
+use Illuminate\Contracts\Database\LostConnectionDetector as LostConnectionDetectorContract;
 use Illuminate\Contracts\Queue\EntityResolver;
 use Illuminate\Database\Connectors\ConnectionFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -42,9 +43,8 @@ class DatabaseServiceProvider extends ServiceProvider
         Model::clearBootedModels();
 
         $this->registerConnectionServices();
-        $this->registerEloquentFactory();
+        $this->registerFakerGenerator();
         $this->registerQueueableEntityResolver();
-        $this->registerDoctrineTypes();
     }
 
     /**
@@ -72,18 +72,34 @@ class DatabaseServiceProvider extends ServiceProvider
             return $app['db']->connection();
         });
 
+        $this->app->bind('db.schema', function ($app) {
+            return $app['db']->connection()->getSchemaBuilder();
+        });
+
         $this->app->singleton('db.transactions', function ($app) {
             return new DatabaseTransactionsManager;
+        });
+
+        $this->app->singleton(ConcurrencyErrorDetectorContract::class, function ($app) {
+            return new ConcurrencyErrorDetector;
+        });
+
+        $this->app->singleton(LostConnectionDetectorContract::class, function ($app) {
+            return new LostConnectionDetector;
         });
     }
 
     /**
-     * Register the Eloquent factory instance in the container.
+     * Register the Faker Generator instance in the container.
      *
      * @return void
      */
-    protected function registerEloquentFactory()
+    protected function registerFakerGenerator()
     {
+        if (! class_exists(FakerGenerator::class)) {
+            return;
+        }
+
         $this->app->singleton(FakerGenerator::class, function ($app, $parameters) {
             $locale = $parameters['locale'] ?? $app['config']->get('app.faker_locale', 'en_US');
 
@@ -107,25 +123,5 @@ class DatabaseServiceProvider extends ServiceProvider
         $this->app->singleton(EntityResolver::class, function () {
             return new QueueEntityResolver;
         });
-    }
-
-    /**
-     * Register custom types with the Doctrine DBAL library.
-     *
-     * @return void
-     */
-    protected function registerDoctrineTypes()
-    {
-        if (! class_exists(Type::class)) {
-            return;
-        }
-
-        $types = $this->app['config']->get('database.dbal.types', []);
-
-        foreach ($types as $name => $class) {
-            if (! Type::hasType($name)) {
-                Type::addType($name, $class);
-            }
-        }
     }
 }

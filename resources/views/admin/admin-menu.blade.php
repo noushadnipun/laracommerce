@@ -46,6 +46,13 @@
 
 
  <li class="nav-item">
+    <a href="{{route('admin_menu.index')}}" class="nav-link {{ Request()->routeIs('admin_menu*') ? 'active' : ' ' }}">
+        <i class="nav-icon fas fa-bars text-sm"></i>
+        <p>Menu Management</p>
+    </a>
+</li>
+
+ <li class="nav-item">
     <a href="{{route('admin_adminMenu')}}" class="nav-link {{ Request()->routeIs('admin_adminMenu*') ? 'active' : ' ' }}">
         <i class="nav-icon far fa-dot-circle font-11"></i>
         <p>
@@ -100,9 +107,44 @@
         </li>
 
         <li class="nav-item">
-            <a href="{{route('admin_product_order_index')}}" class="nav-link {{ Request()->routeIs('admin_product_order_index') ? 'active' : ' ' }}">
+            <a href="{{route('admin_product_import')}}" class="nav-link {{ Request()->routeIs('admin_product_import*') ? 'active' : ' ' }}">
             <i class="nav-icon far fa-dot-circle font-11"></i>
-            <p>Manage Order</p>
+            <p>Import Products</p>
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a href="{{route('admin_inventory_index')}}" class="nav-link {{ Request()->routeIs('admin_inventory*') ? 'active' : ' ' }}">
+            <i class="nav-icon fas fa-boxes font-11"></i>
+            <p>Inventory Management</p>
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a href="{{route('admin_review_index')}}" class="nav-link {{ Request()->routeIs('admin_review*') ? 'active' : ' ' }}">
+            <i class="nav-icon fas fa-comments font-11"></i>
+            <p>Reviews</p>
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a href="{{route('admin_size_guide_index')}}" class="nav-link {{ Request()->routeIs('admin_size_guide*') ? 'active' : ' ' }}">
+            <i class="nav-icon fas fa-ruler font-11"></i>
+            <p>Size Guides</p>
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a href="{{route('admin_statistics_index')}}" class="nav-link {{ Request()->routeIs('admin_statistics*') ? 'active' : ' ' }}">
+            <i class="nav-icon fas fa-chart-bar font-11"></i>
+            <p>Statistics</p>
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a href="{{route('admin_product_order_index')}}" class="nav-link {{ Request()->routeIs('admin_product_order*') ? 'active' : ' ' }}">
+            <i class="nav-icon fas fa-shopping-cart font-11"></i>
+            <p>Order Management</p>
             </a>
         </li>
 
@@ -113,9 +155,9 @@
             </a>
         </li>
         <li class="nav-item">
-            <a href="{{route('admin_product_attribute_index')}}" class="nav-link {{ Request()->routeIs('admin_product_attribute_index') ? 'active' : ' ' }}">
+            <a href="{{route('admin_product_attribute_index')}}" class="nav-link {{ Request()->routeIs('admin_product_attribute_index*') ? 'active' : ' ' }}">
             <i class="nav-icon far fa-dot-circle font-11"></i>
-            <p>Attribute</p>
+            <p>Attributes</p>
             </a>
         </li>
         <li class="nav-item">

@@ -133,27 +133,31 @@ class Person extends \Faker\Provider\Person
     protected static $licenceCodes = ['A', 'A1', 'B', 'C', 'C1', 'C2', 'EB', 'EC', 'EC1', 'I', 'L', 'L1'];
 
     /**
-     * @link https://en.wikipedia.org/wiki/National_identification_number#South_Africa
+     * @see https://en.wikipedia.org/wiki/National_identification_number#South_Africa
      *
-     * @param \DateTime $birthdate
-     * @param bool      $citizen
-     * @param string    $gender
+     * @param bool   $citizen
+     * @param string $gender
      *
      * @return string
      */
-    public function idNumber(\DateTime $birthdate = null, $citizen = true, $gender = null)
+    public function idNumber(?\DateTime $birthdate = null, $citizen = true, $gender = null)
     {
         if (!$birthdate) {
             $birthdate = $this->generator->dateTimeThisCentury();
         }
         $birthDateString = $birthdate->format('ymd');
-        switch (strtolower($gender)) {
+
+        switch (strtolower($gender ?: '')) {
             case static::GENDER_FEMALE:
                 $genderDigit = self::numberBetween(0, 4);
+
                 break;
+
             case static::GENDER_MALE:
                 $genderDigit = self::numberBetween(5, 9);
+
                 break;
+
             default:
                 $genderDigit = self::numberBetween(0, 9);
         }

@@ -3,7 +3,7 @@ $companyPhone =  \App\Helpers\WebsiteSettings::settings('company_phone');
 $getProductCats = \App\Models\ProductCategory::where('visibility', '1')->where('parent_id', null)->get();
 ?>
 <div class="Offcanvas_menu">
-    <div class="container">
+    <div class="container-fluid">
         <div class="row">
             <div class="col-12">
                 <div class="canvas_open">
@@ -85,7 +85,7 @@ $getProductCats = \App\Models\ProductCategory::where('visibility', '1')->where('
                             <!--- -------------
                             -------Mobile menu
                             ------------------->
-                            @php $secondaryMenu =   Menu::getByName('secondary'); @endphp
+                            @php $secondaryMenu = Menu::getByName('secondary'); @endphp
                             @foreach($secondaryMenu as $link)
                             <li class="menu-item{{$link['child'] ? '-has-children' : ''}}">
                                 <a href="{{ url($link['link']) }}">{{ $link['label'] }}</a>
@@ -93,7 +93,7 @@ $getProductCats = \App\Models\ProductCategory::where('visibility', '1')->where('
                                     @php $subMneu = $link['child'] @endphp
                                     <ul class="sub-menu">
                                         @foreach($subMneu as $link)
-                                        <a href="{{ url($link['link']) }}">{{ $link['label'] }}</a>
+                                        <li><a href="{{ url($link['link']) }}">{{ $link['label'] }}</a></li>
                                         @endforeach
                                     </ul>
                                 @endif
@@ -121,10 +121,37 @@ $getProductCats = \App\Models\ProductCategory::where('visibility', '1')->where('
 
 <!--header area start-->
 <header>
+    <!-- Slim Promo/Info Bar -->
+    <div class="header_promo_bar" id="headerPromoBar" style="background:#0f274b;color:#cfd8e3;font-size:13px;position:relative;">
+        <div class="container-fluid">
+            <div class="row align-items-center" style="min-height:34px;">
+                <div class="col-md-4 d-none d-md-block">
+                    <div style="display:flex;align-items:center;gap:8px;">
+                        <i class="fa fa-truck"></i>
+                        <span>Free shipping on orders over ৳1,000</span>
+                    </div>
+                </div>
+                <div class="col-md-4 text-center">
+                    <div style="display:inline-flex;align-items:center;gap:8px;">
+                        <i class="fa fa-refresh"></i>
+                        <span>7‑day easy returns</span>
+                    </div>
+                </div>
+                <div class="col-md-4 text-md-right d-none d-md-block">
+                    <div style="display:inline-flex;align-items:center;gap:8px;">
+                        <i class="fa fa-phone"></i>
+                        <span>Hotline: <a href="tel:{{$companyPhone}}" style="color:#fff;text-decoration:none;">{{$companyPhone}}</a></span>
+                    </div>
+                </div>
+                <button type="button" id="promoBarClose" aria-label="Close" style="position:absolute;right:10px;top:6px;background:transparent;border:0;color:#cfd8e3;font-size:16px;line-height:1;cursor:pointer;">×</button>
+            </div>
+        </div>
+    </div>
+    
     <div class="main_header">
         <!--header top start-->
         <div class="header_top">
-            <div class="container">  
+            <div class="container-fluid">  
                 <div class="row align-items-center">
                     <div class="col-lg-6 col-md-6">
                         <div class="support_info">
@@ -167,20 +194,21 @@ $getProductCats = \App\Models\ProductCategory::where('visibility', '1')->where('
         <!--header top start-->
         <!--header middel start-->
         <div class="header_middle">
-            <div class="container">
-                <div class="row align-items-center">
-                    <div class="col-lg-3 col-md-6">
+        <div class="container-fluid py-2" style="background:#ffffff;">
+            <div class="row g-2 align-items-center">
+                <div class="col-lg-2 col-md-3 col-6 d-flex align-items-center gap-2">
+                    <a href="javascript:void(0)" class="d-lg-none"><i class="ion-navicon" style="font-size:20px;color:#0063d1"></i></a>
                         <div class="logo">
                             <a href="{{url('/')}}"><img src="{{ \App\Helpers\websiteSettings::siteLogo() }}" alt=""></a>
                         </div>
                     </div>
-                    <div class="col-lg-9 col-md-6">
-                        <div class="middel_right">
-                            <div class="search_container">
-                                <form action="{{route('frontend_search')}}" method="get">
+                <div class="col-lg-8 col-md-12 col-12 order-3 order-lg-2" style="margin-top:6px;">
+                        <div>
+                            <div class="search_container" style="max-width:100%;">
+                                <form action="{{route('frontend_search')}}" method="get" class="w-100" style="display:flex;align-items:center;gap:8px;">
                                     @csrf
-                                    <div class="hover_category">
-                                        <select class="select_option" name="select" id="categori1">
+                                    <div class="hover_category d-none d-md-block" style="flex:0 0 200px;max-width:200px;">
+                                        <select class="select_option form-select" name="select" id="categori1" style="width:100%;height:42px;">
                                             <option selected value="">All Categories</option>
                                             @php $pcategory = \App\Models\ProductCategory::where('visibility', '1')->get() @endphp 
                                             @foreach ($pcategory as $item)
@@ -188,17 +216,43 @@ $getProductCats = \App\Models\ProductCategory::where('visibility', '1')->where('
                                             @endforeach
                                         </select>                        
                                     </div>
-                                    <div class="search_box">
-                                        <input placeholder="Search product..." type="text" name="search" required>
-                                        <button type="submit">Search</button> 
+                                    <div class="search_box" style="flex:1 1 auto;display:flex;align-items:center;border:1px solid #d9e1ec;border-radius:24px;padding:4px 6px;">
+                                        <i class="fa fa-search" style="color:#9fb4c9;margin:0 8px"></i>
+                                        <input placeholder="Search essentials, groceries and more..." type="text" name="search" required style="width:100%;border:0;outline:0;">
+                                        <button type="submit" class="btn btn-primary" style="border-radius:20px;padding:6px 16px;">Search</button> 
                                     </div>
                                 </form>
                             </div>
-                            <div class="middel_right_info">
-                                <!-- Mini cart -->
-                                @include('frontend.product.mini-cart')
-                                <!-- End Mini Cart -->
-                            </div>
+                            <div class="d-none"></div>
+                            <div class="d-none"></div>
+                            <div class="d-none"></div>
+                        </div>
+                    </div>
+                <div class="col-lg-2 col-md-9 col-6 order-2 order-lg-3" style="display:flex;justify-content:flex-end;align-items:center;gap:16px;">
+                        <!-- Mini cart -->
+                        @include('frontend.product.mini-cart')
+                        <!-- End Mini Cart -->
+                        <!-- Wishlist & Compare after mini cart -->
+                        <div class="header_quick_actions" style="display:flex;align-items:center;gap:16px;">
+                            <?php 
+                                $wishlistCount = 0; 
+                                if(auth()->check()) { 
+                                    $wishlistCount = \App\Models\Product\ProductWishlist::where('user_id', auth()->id())->count(); 
+                                }
+                                $compareCount = 0;
+                                if(class_exists('App\\Models\\Product\\ProductCompare')){
+                                    $compareList = \App\Models\Product\ProductCompare::getCompareList();
+                                    if(is_array($compareList)) { $compareCount = count($compareList); }
+                                }
+                            ?>
+                            <a href="{{ route('frontend_wishlist_index') }}" title="Wishlist" style="position:relative;color:#333;text-decoration:none;">
+                                <i class="fa fa-heart"></i>
+                                <span style="position:absolute;top:-8px;right:-10px;background:#e74c3c;color:#fff;border-radius:10px;padding:0 6px;font-size:11px;line-height:18px;min-width:18px;text-align:center;">{{ $wishlistCount }}</span>
+                            </a>
+                            <a href="{{ route('frontend_compare_index') }}" title="Compare" style="position:relative;color:#333;text-decoration:none;">
+                                <i class="fa fa-balance-scale"></i>
+                                <span style="position:absolute;top:-8px;right:-10px;background:#28a745;color:#fff;border-radius:10px;padding:0 6px;font-size:11px;line-height:18px;min-width:18px;text-align:center;">{{ $compareCount }}</span>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -206,10 +260,10 @@ $getProductCats = \App\Models\ProductCategory::where('visibility', '1')->where('
         </div>
         <!--header middel end-->
         <!--header bottom satrt-->
-        <div class="main_menu_area">
-            <div class="container">
+        <div class="main_menu_area" style="padding-top:6px;padding-bottom:6px;">
+            <div class="container-fluid">
                 <div class="row align-items-center">
-                    <div class="col-lg-3 col-md-12">
+                    <div class="col-lg-3 col-md-12 d-none d-lg-block">
                         <div class="categories_menu">
                             <!-- Header Category Show All Desktop as Menu-->
                             <div class="categories_title">
@@ -278,10 +332,27 @@ $getProductCats = \App\Models\ProductCategory::where('visibility', '1')->where('
     </div> 
 </header>
 <!--header area end-->
+<script>
+    (function(){
+        try{
+            var key = 'promoBarClosed';
+            var bar = document.getElementById('headerPromoBar');
+            var btn = document.getElementById('promoBarClose');
+            if(!bar || !btn) return;
+            if(localStorage.getItem(key) === '1'){
+                bar.style.display = 'none';
+            }
+            btn.addEventListener('click', function(){
+                bar.style.display = 'none';
+                try{ localStorage.setItem(key, '1'); }catch(e){}
+            });
+        }catch(e){}
+    })();
+ </script>
 
 <!--sticky header area start-->
 <div class="sticky_header_area sticky-header">
-    <div class="container">
+    <div class="container-fluid">
         <div class="row align-items-center">
             <div class="col-lg-3">
                 <div class="logo">

@@ -55,7 +55,7 @@
         <tr>
             <td>{{$item->qty}}</td>
             <td> <a href="{{route('frontend_single_product', $item->products->slug)}}" target="_blank">{{$item->products->title}}</a>  </td>
-            <td><img style="width: 50px;" src="{{App\Models\Media::fileLocation($item->products->featured_image)}}"> </td>
+            <td><img style="width: 50px; height: 50px; object-fit: cover; border-radius: 4px;" src="{{$item->products->getFeaturedImageUrl()}}" alt="{{$item->products->title}}" onerror="this.src='{{asset('public/frontend/images/no-images.jpg')}}'"> </td>
             <td>
                 @if(isset($item->attribute))
                 @foreach($item->attribute as $attr => $value)

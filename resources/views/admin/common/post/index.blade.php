@@ -28,7 +28,7 @@
                         <?php
                             $fimg = \App\Models\Media::where('id', $data->featured_image)->first();
                         ?>
-                        @if(!empty($fimg->id))
+                        @if(!empty($fimg) && !empty($fimg->id))
                             <img style="width: 50px;" class="img-fluid" src="{{asset('/public/uploads/images/').'/'.$fimg->filename}}">
                         @endif
                     </td>

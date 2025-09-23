@@ -25,21 +25,22 @@ use Symfony\Component\HttpFoundation\Response;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  *
- * @method Request  getRequest()  A Request instance
- * @method Response getResponse() A Response instance
+ * @template-extends AbstractBrowser<Request, Response>
  */
 class HttpKernelBrowser extends AbstractBrowser
 {
-    protected $kernel;
-    private $catchExceptions = true;
+    private bool $catchExceptions = true;
 
     /**
      * @param array $server The server parameters (equivalent of $_SERVER)
      */
-    public function __construct(HttpKernelInterface $kernel, array $server = [], History $history = null, CookieJar $cookieJar = null)
-    {
+    public function __construct(
+        protected HttpKernelInterface $kernel,
+        array $server = [],
+        ?History $history = null,
+        ?CookieJar $cookieJar = null,
+    ) {
         // These class properties must be set before calling the parent constructor, as it may depend on it.
-        $this->kernel = $kernel;
         $this->followRedirects = false;
 
         parent::__construct($server, $history, $cookieJar);
@@ -48,19 +49,17 @@ class HttpKernelBrowser extends AbstractBrowser
     /**
      * Sets whether to catch exceptions when the kernel is handling a request.
      */
-    public function catchExceptions(bool $catchExceptions)
+    public function catchExceptions(bool $catchExceptions): void
     {
         $this->catchExceptions = $catchExceptions;
     }
 
     /**
-     * Makes a request.
-     *
-     * @return Response A Response instance
+     * @param Request $request
      */
-    protected function doRequest($request)
+    protected function doRequest(object $request): Response
     {
-        $response = $this->kernel->handle($request, HttpKernelInterface::MASTER_REQUEST, $this->catchExceptions);
+        $response = $this->kernel->handle($request, HttpKernelInterface::MAIN_REQUEST, $this->catchExceptions);
 
         if ($this->kernel instanceof TerminableInterface) {
             $this->kernel->terminate($request, $response);
@@ -70,11 +69,9 @@ class HttpKernelBrowser extends AbstractBrowser
     }
 
     /**
-     * Returns the script to execute when the request must be insulated.
-     *
-     * @return string
+     * @param Request $request
      */
-    protected function getScript($request)
+    protected function getScript(object $request): string
     {
         $kernel = var_export(serialize($this->kernel), true);
         $request = var_export(serialize($request), true);
@@ -83,7 +80,7 @@ class HttpKernelBrowser extends AbstractBrowser
 
         $requires = '';
         foreach (get_declared_classes() as $class) {
-            if (0 === strpos($class, 'ComposerAutoloaderInit')) {
+            if (str_starts_with($class, 'ComposerAutoloaderInit')) {
                 $r = new \ReflectionClass($class);
                 $file = \dirname($r->getFileName(), 2).'/autoload.php';
                 if (file_exists($file)) {
@@ -110,7 +107,7 @@ EOF;
         return $code.$this->getHandleScript();
     }
 
-    protected function getHandleScript()
+    protected function getHandleScript(): string
     {
         return <<<'EOF'
 $response = $kernel->handle($request);
@@ -123,12 +120,7 @@ echo serialize($response);
 EOF;
     }
 
-    /**
-     * Converts the BrowserKit request to a HttpKernel request.
-     *
-     * @return Request A Request instance
-     */
-    protected function filterRequest(DomRequest $request)
+    protected function filterRequest(DomRequest $request): Request
     {
         $httpRequest = Request::create($request->getUri(), $request->getMethod(), $request->getParameters(), $request->getCookies(), $request->getFiles(), $server = $request->getServer(), $request->getContent());
         if (!isset($server['HTTP_ACCEPT'])) {
@@ -152,10 +144,8 @@ EOF;
      * an invalid UploadedFile is returned with an error set to UPLOAD_ERR_INI_SIZE.
      *
      * @see UploadedFile
-     *
-     * @return array An array with all uploaded files marked as already moved
      */
-    protected function filterFiles(array $files)
+    protected function filterFiles(array $files): array
     {
         $filtered = [];
         foreach ($files as $key => $value) {
@@ -186,11 +176,9 @@ EOF;
     }
 
     /**
-     * Converts the HttpKernel response to a BrowserKit response.
-     *
-     * @return DomResponse A DomResponse instance
+     * @param Response $response
      */
-    protected function filterResponse($response)
+    protected function filterResponse(object $response): DomResponse
     {
         // this is needed to support StreamedResponse
         ob_start();

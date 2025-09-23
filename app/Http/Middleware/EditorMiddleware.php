@@ -16,10 +16,11 @@ class EditorMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        if(Auth::check() && Auth::user()->role->id == '2'){ //here 1 is Editor
-            return $next($request);
-        } else {
-            return redirect()->route('login');
-        }
+        return $next($request);
+        // if(Auth::check() && Auth::user()->role->id == '2'){ //here 1 is Editor
+        //     return $next($request);
+        // } else {
+        //     return redirect()->route('login');
+        // }
     }
 }

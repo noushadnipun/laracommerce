@@ -1,0 +1,65 @@
+[
+  {
+    "title": "iPhone 14 Pro Max",
+    "brand": "Apple",
+    "category": "Smartphones",
+    "code": "APL-IP14PM-128",
+    "regular_price": 149900,
+    "sale_price": 139900,
+    "stock": 25,
+    "images": [
+      "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-14-pro-max-finish-select-202209-6-7inch-deeppurple?wid=512&hei=512&fmt=jpeg&qlt=90&.v=1660744868869",
+      "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-14-pro-storage-select-202209?wid=512&hei=512&fmt=jpeg&qlt=90&.v=1660753619946"
+    ],
+    "description": "Apple iPhone 14 Pro Max with A16 Bionic and Dynamic Island",
+    "short_description": "6.7-inch, Pro camera system"
+  },
+  {
+    "title": "Samsung Galaxy S23 Ultra",
+    "brand": "Samsung",
+    "category": "Smartphones",
+    "code": "SMS-S23U-256",
+    "regular_price": 129900,
+    "sale_price": 119900,
+    "stock": 40,
+    "images": [
+      "https://images.samsung.com/is/image/samsung/p6pim/levant/sm-s918bzkdmea/gallery/levant-galaxy-s23-ultra-s918-sm-s918bzkdmea-534270929?$650_519_PNG$",
+      "https://images.samsung.com/is/image/samsung/p6pim/levant/sm-s918bzdgmea/gallery/levant-galaxy-s23-ultra-s918-sm-s918bzdgmea-534270940?$650_519_PNG$"
+    ],
+    "description": "Samsung Galaxy S23 Ultra with S Pen and 200MP camera",
+    "short_description": "6.8-inch, Snapdragon 8 Gen 2"
+  },
+  {
+    "title": "MacBook Air 13-inch M2",
+    "brand": "Apple",
+    "category": "Laptops",
+    "code": "APL-MBA13-M2-8-256",
+    "regular_price": 119900,
+    "sale_price": 109900,
+    "stock": 15,
+    "images": [
+      "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/mba13-midnight-select-20220606?wid=512&hei=512&fmt=jpeg&qlt=90&.v=1654122880566",
+      "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/mba13-starlight-select-20220606?wid=512&hei=512&fmt=jpeg&qlt=90&.v=1654122863189"
+    ],
+    "description": "Apple MacBook Air with M2 chip",
+    "short_description": "Fanless design, all-day battery"
+  },
+  {
+    "title": "Nike Air Zoom Pegasus 40",
+    "brand": "Nike",
+    "category": "Men Shoes",
+    "code": "NKE-PEG40-BLK-10",
+    "regular_price": 14999,
+    "sale_price": 12999,
+    "stock": 80,
+    "images": [
+      "https://static.nike.com/a/images/c_limit,w_592,f_auto/t_product_v1/6b9c04b7-5f6c-4ceb-8e93-2c7a4d797f5a/air-zoom-pegasus-40-road-running-shoes-6b4x7Z.png",
+      "https://static.nike.com/a/images/c_limit,w_592,f_auto/t_product_v1/61f0d8e1-841f-4fd6-8c1a-2d3d0b0b4b55/air-zoom-pegasus-40-road-running-shoes-6b4x7Z.png"
+    ],
+    "description": "Responsive daily trainer",
+    "short_description": "Men's road running shoes"
+  }
+]
+
+
+

@@ -35,7 +35,7 @@ class CreateProductsTable extends Migration
             $table->string('current_stock')->nullable();
             $table->string('product_image')->nullable();
             $table->string('featured_image')->nullable();
-            $table->string('visibilty')->default('1');
+            $table->string('visibility')->default('1');
             $table->timestamps();
         });
     }

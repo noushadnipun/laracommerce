@@ -45,7 +45,7 @@ Product Brand
                                     <?php
                                         $bimg = \App\Models\Media::where('id', $brand->image)->first();
                                     ?>
-                                    @if(!empty($bimg->id))
+                                    @if(!empty($bimg) && !empty($bimg->id))
                                         <div class="product-img product-images col-md-2 col-3">
                                             <input type="hidden" name="brandimg_id" value="{{$bimg->id}}">
                                             <img class="img-fluid" src="{{asset('/public/uploads/images/').'/'.$bimg->filename}}">
@@ -112,7 +112,7 @@ Product Brand
                                         <?php
                                             $bimg = \App\Models\Media::where('id', $data->image)->first();
                                         ?>
-                                        @if(!empty($bimg->id))
+                                        @if(!empty($bimg) && !empty($bimg->id))
                                             <img style="width: 50px;" class="img-fluid" src="{{asset('/public/uploads/images/').'/'.$bimg->filename}}">
                                         @endif
                                     </td>

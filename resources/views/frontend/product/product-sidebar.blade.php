@@ -35,12 +35,17 @@
 
         <div class="widget_list tags_widget">
             <h2>Product brands</h2>
-            <div class="tag_cloud">
-                @php $brands = App\Models\ProductBrand::where('visibility', '1')->orderBy('id', 'DESC')->get() @endphp
-                @foreach ($brands as $item)
-                    <a href="{{route('frontend_single_product_brand', $item->slug)}}">{{$item->name}}</a>
+            <div class="tag_cloud" style="max-height: 220px; overflow: hidden; position: relative;" id="brandTagCloud">
+                @php $brands = App\Models\ProductBrand::where('visibility', '1')->orderBy('name')->get() @endphp
+                @foreach ($brands as $index => $item)
+                    <a class="brand-tag {{ $index >= 20 ? 'd-none extra-brand' : '' }}" href="{{route('frontend_single_product_brand', $item->slug)}}">{{$item->name}}</a>
                 @endforeach
             </div>
+            @if(count($brands) > 20)
+            <div class="mt-2">
+                <a href="javascript:void(0)" id="toggleBrands" class="btn btn-sm btn-outline-secondary">Show more</a>
+            </div>
+            @endif
         </div>
     </div>
 </aside>

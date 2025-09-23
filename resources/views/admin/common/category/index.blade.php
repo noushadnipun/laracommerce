@@ -80,7 +80,7 @@
                                     <?php
                                         $cimg = \App\Models\Media::where('id', $category->image)->first();
                                     ?>
-                                    @if(!empty($cimg->id))
+                                    @if(!empty($cimg) && !empty($cimg->id))
                                         <div class="product-img product-images col-md-2 col-3">
                                             <input type="hidden" name="catimg_id" value="{{$cimg->id}}">
                                             <img class="img-fluid" src="{{asset('/public/uploads/images/').'/'.$cimg->filename}}">
@@ -133,7 +133,7 @@
                                         <?php
                                             $cimg = \App\Models\Media::where('id', $data->image)->first();
                                         ?>
-                                        @if(!empty($cimg->id))
+                                        @if(!empty($cimg) && !empty($cimg->id))
                                             <img style="width: 50px;" class="img-fluid" src="{{asset('/public/uploads/images/').'/'.$cimg->filename}}">
                                         @endif
                                     </td>

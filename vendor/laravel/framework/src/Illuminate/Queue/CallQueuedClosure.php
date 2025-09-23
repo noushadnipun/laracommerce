@@ -8,6 +8,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Laravel\SerializableClosure\SerializableClosure;
 use ReflectionFunction;
 
 class CallQueuedClosure implements ShouldQueue
@@ -17,9 +18,16 @@ class CallQueuedClosure implements ShouldQueue
     /**
      * The serializable Closure instance.
      *
-     * @var \Illuminate\Queue\SerializableClosure
+     * @var \Laravel\SerializableClosure\SerializableClosure
      */
     public $closure;
+
+    /**
+     * The name assigned to the job.
+     *
+     * @var string|null
+     */
+    public $name = null;
 
     /**
      * The callbacks that should be executed on failure.
@@ -38,10 +46,9 @@ class CallQueuedClosure implements ShouldQueue
     /**
      * Create a new job instance.
      *
-     * @param  \Illuminate\Queue\SerializableClosure  $closure
-     * @return void
+     * @param  \Laravel\SerializableClosure\SerializableClosure  $closure
      */
-    public function __construct(SerializableClosure $closure)
+    public function __construct($closure)
     {
         $this->closure = $closure;
     }
@@ -77,8 +84,8 @@ class CallQueuedClosure implements ShouldQueue
     public function onFailure($callback)
     {
         $this->failureCallbacks[] = $callback instanceof Closure
-                        ? new SerializableClosure($callback)
-                        : $callback;
+            ? new SerializableClosure($callback)
+            : $callback;
 
         return $this;
     }
@@ -92,7 +99,7 @@ class CallQueuedClosure implements ShouldQueue
     public function failed($e)
     {
         foreach ($this->failureCallbacks as $callback) {
-            call_user_func($callback instanceof SerializableClosure ? $callback->getClosure() : $callback, $e);
+            $callback($e);
         }
     }
 
@@ -105,6 +112,21 @@ class CallQueuedClosure implements ShouldQueue
     {
         $reflection = new ReflectionFunction($this->closure->getClosure());
 
-        return 'Closure ('.basename($reflection->getFileName()).':'.$reflection->getStartLine().')';
+        $prefix = is_null($this->name) ? '' : "{$this->name} - ";
+
+        return $prefix.'Closure ('.basename($reflection->getFileName()).':'.$reflection->getStartLine().')';
+    }
+
+    /**
+     * Assign a name to the job.
+     *
+     * @param  string  $name
+     * @return $this
+     */
+    public function name($name)
+    {
+        $this->name = $name;
+
+        return $this;
     }
 }

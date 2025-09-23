@@ -10,21 +10,21 @@ use App\Models\Category;
 
 class CategoryController extends Controller
 {
-    protected $getTaxonomyName;
-    protected $getTaxonomySlug;
-    protected $getTermSlug;
-
-    public function __construct(Request $request){
+    protected function getTaxonomyData(Request $request)
+    {
         $checkTaxonomy = TermTaxonomy::where('slug', $request->taxonomy)->where('term_type', $request->type)->first();
-        $this->getTaxonomySlug = $checkTaxonomy['slug'];
-        $this->getTaxonomyName = $checkTaxonomy['name'];
-        $this->getTermSlug = $request->type;
+        return [
+            'slug' => $checkTaxonomy ? $checkTaxonomy['slug'] : null,
+            'name' => $checkTaxonomy ? $checkTaxonomy['name'] : null,
+            'term_slug' => $request->type
+        ];
     }
 
     public function index(Request $request){
-        $taxonomy_name = $this->getTaxonomyName;
-        $taxonomy_slug = $this->getTaxonomySlug;
-        $term_slug = $this->getTermSlug;
+        $taxonomyData = $this->getTaxonomyData($request);
+        $taxonomy_name = $taxonomyData['name'];
+        $taxonomy_slug = $taxonomyData['slug'];
+        $term_slug = $taxonomyData['term_slug'];
 
         if(empty($taxonomy_slug)){
            return view('admin.404', ['message' => 'Invalid Taxonomy Type']);
@@ -46,9 +46,10 @@ class CategoryController extends Controller
             'slug' => 'required|unique:categories,slug',
         ]);
 
-        $taxonomy_name = $this->getTaxonomyName;
-        $taxonomy_slug = $this->getTaxonomySlug;
-        $term_slug = $this->getTermSlug;
+        $taxonomyData = $this->getTaxonomyData($request);
+        $taxonomy_name = $taxonomyData['name'];
+        $taxonomy_slug = $taxonomyData['slug'];
+        $term_slug = $taxonomyData['term_slug'];
 
         if(empty($taxonomy_slug)){
            return view('admin.404', ['message' => 'Invalid Taxonomy Type']);
@@ -68,10 +69,10 @@ class CategoryController extends Controller
     //update
     public function update(Request $request)
     {
-        
-        $taxonomy_name = $this->getTaxonomyName;
-        $taxonomy_slug = $this->getTaxonomySlug;
-        $term_slug = $this->getTermSlug;
+        $taxonomyData = $this->getTaxonomyData($request);
+        $taxonomy_name = $taxonomyData['name'];
+        $taxonomy_slug = $taxonomyData['slug'];
+        $term_slug = $taxonomyData['term_slug'];
 
         if(empty($taxonomy_slug)){
            return view('admin.404', ['message' => 'Invalid Taxonomy Type']);

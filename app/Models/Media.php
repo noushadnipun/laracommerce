@@ -26,12 +26,15 @@ class Media extends Model
     }
 
     public static function fileLocation($media_id){
-        if(!empty($media_id)){
-            $media = Media::where('id', $media_id)->first();
-            $filename = $media->filename;
-            return asset('/public/uploads/images/').'/'.$filename;
-        } else {
-            return asset('/public/frontend/images/no-images.jpg');
+        $placeholder = asset('public/frontend/images/no-images.svg');
+        if(empty($media_id)){
+            return $placeholder;
         }
+        $media = Media::where('id', $media_id)->first();
+        $filename = $media?->filename;
+        if(empty($filename)){
+            return $placeholder;
+        }
+        return asset('public/uploads/images/').'/'.$filename;
     }
 }

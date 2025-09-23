@@ -1,5 +1,5 @@
 <section class="shipping_area shipping_four mb-70">
-    <div class="container">
+    <div class="container-fluid">
         <div class="shipping_inner">
             <div class=" row no-gutters">
                 <div class="col-lg-3 col-md-6">

@@ -15,7 +15,7 @@ class CallQueuedListener implements ShouldQueue
     /**
      * The listener class name.
      *
-     * @var string
+     * @var class-string
      */
     public $class;
 
@@ -41,6 +41,13 @@ class CallQueuedListener implements ShouldQueue
     public $tries;
 
     /**
+     * The maximum number of exceptions allowed, regardless of attempts.
+     *
+     * @var int
+     */
+    public $maxExceptions;
+
+    /**
      * The number of seconds to wait before retrying a job that encountered an uncaught exception.
      *
      * @var int
@@ -62,6 +69,13 @@ class CallQueuedListener implements ShouldQueue
     public $timeout;
 
     /**
+     * Indicates if the job should fail if the timeout is exceeded.
+     *
+     * @var bool
+     */
+    public $failOnTimeout = false;
+
+    /**
      * Indicates if the job should be encrypted.
      *
      * @var bool
@@ -71,10 +85,9 @@ class CallQueuedListener implements ShouldQueue
     /**
      * Create a new job instance.
      *
-     * @param  string  $class
+     * @param  class-string  $class
      * @param  string  $method
      * @param  array  $data
-     * @return void
      */
     public function __construct($class, $method, $data)
     {

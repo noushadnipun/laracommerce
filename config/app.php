@@ -165,7 +165,6 @@ return [
         /*
          * Package Service Providers...
          */
-        Harimayco\Menu\MenuServiceProvider::class,
         /*
          * Application Service Providers...
          */
@@ -174,6 +173,9 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        App\Providers\HelperServiceProvider::class,
+        App\Providers\MenuServiceProvider::class,
+        App\Providers\PermissionServiceProvider::class,
 
     ],
 
@@ -226,7 +228,8 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
-        'Menu' => Harimayco\Menu\Facades\Menu::class,
+        'Menu' => App\Helpers\MenuHelper::class,
+        'ImageHelper' => App\Helpers\ImageHelper::class,
 
     ],
 

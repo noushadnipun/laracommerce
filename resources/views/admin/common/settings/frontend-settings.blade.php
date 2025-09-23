@@ -40,7 +40,7 @@ Frontend Settings
                                 <?php
                                     $fimg = \App\Models\Media::where('id', frontSetting('site_logoimg_id'))->first();
                                 ?>
-                                @if(!empty($fimg->id))
+                                @if(!empty($fimg) && !empty($fimg->id))
                                     <div class="product-img product-images col-md-2 col-3">
                                         <input type="hidden" name="site_logoimg_id" value="{{$fimg->id}}">
                                         <img class="img-fluid" src="{{asset('/public/uploads/images/').'/'.$fimg->filename}}">

@@ -17,17 +17,28 @@ class TermsSeeder extends Seeder
     {
         $terms = [
             [
-               'name'=>'Page',
-               'slug'=>'page',
+                'id' => 1,
+                'name' => 'Page',
+                'slug' => 'page',
+                'created_at' => '2021-02-13 15:25:35',
+                'updated_at' => '2021-02-13 15:25:35',
             ],
             [
-               'name'=>'Slider',
-               'slug'=>'slider',
+                'id' => 2,
+                'name' => 'Slider',
+                'slug' => 'slider',
+                'created_at' => '2021-02-13 15:25:35',
+                'updated_at' => '2021-02-13 15:25:35',
             ],
         ];
 
-        foreach ($terms as $key => $value) {
-            Term::create($value);
+        foreach ($terms as $term) {
+            Term::updateOrCreate(
+                ['id' => $term['id']],
+                $term
+            );
         }
+
+        $this->command->info('✅ Terms seeded successfully!');
     }
 }

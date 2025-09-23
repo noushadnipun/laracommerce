@@ -21,7 +21,27 @@ class ProductBrand extends Model
     public static function brandName($brand_id){
         if(!empty($brand_id)){
             $brand = ProductBrand::where('id', $brand_id)->first();
-            return $brand->name;
+            return $brand ? $brand->name : 'Unknown Brand';
         }
+        return 'Unknown Brand';
+    }
+
+    /**
+     * Get brand slug by ID
+     */
+    public static function brandSlug($brand_id){
+        if(!empty($brand_id)){
+            $brand = ProductBrand::where('id', $brand_id)->first();
+            return $brand ? $brand->slug : '#';
+        }
+        return '#';
+    }
+
+    /**
+     * Get products for this brand
+     */
+    public function products()
+    {
+        return $this->hasMany(Product::class, 'brand_id');
     }
 }

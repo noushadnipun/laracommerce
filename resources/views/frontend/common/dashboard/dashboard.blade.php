@@ -182,7 +182,7 @@
         let orderId = $(this).attr('id');
         $.ajax({
             type : 'GET',
-            url :  '<?php echo route('frontend_order_quick_view', '');?>/'+orderId,
+            url :  '<?php echo url('order/quick-view');?>/'+orderId,
             success : function(data){
                 $('.product_modal_body').html(data);
                 $('#modal_box').modal('show');  

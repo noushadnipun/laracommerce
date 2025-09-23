@@ -9,20 +9,21 @@ use App\Models\Post;
 
 class PostController extends Controller
 {
-    protected $getTermSlug;
-    protected $getTermName;
-
-    public function __construct(Request $request){
+    protected function getTermData(Request $request)
+    {
         $checkTerm = Term::where('slug', $request->type)->first();
-        $this->getTermSlug = $checkTerm['slug'];
-        $this->getTermName = $checkTerm['name'];
+        return [
+            'slug' => $checkTerm ? $checkTerm['slug'] : null,
+            'name' => $checkTerm ? $checkTerm['name'] : null
+        ];
     }
     
     //index 
-    public function index()
+    public function index(Request $request)
     {
-        $term_name = $this->getTermName;
-        $term_slug = $this->getTermSlug;
+        $termData = $this->getTermData($request);
+        $term_name = $termData['name'];
+        $term_slug = $termData['slug'];
 
         if(empty($term_slug)){
            return view('admin.404', ['message' => 'Invalid Post Type']);
@@ -34,8 +35,9 @@ class PostController extends Controller
     //form
     public function form(Request $request)
     {
-        $term_name = $this->getTermName;
-        $term_slug = $this->getTermSlug;
+        $termData = $this->getTermData($request);
+        $term_name = $termData['name'];
+        $term_slug = $termData['slug'];
         
         if(empty($term_slug)){
            return view('admin.404', ['message' => 'Invalid Post Type']);
@@ -57,8 +59,9 @@ class PostController extends Controller
             'name' => 'required',
             'slug' => 'required|unique:posts,slug',
         ]);
-        $term_name = $this->getTermName;
-        $term_slug = $this->getTermSlug;
+        $termData = $this->getTermData($request);
+        $term_name = $termData['name'];
+        $term_slug = $termData['slug'];
         
         if(empty($term_slug)){
            return view('admin.404', ['message' => 'Invalid Post Type']);
@@ -81,9 +84,9 @@ class PostController extends Controller
     //update
     public function update(Request $request)
     {
-        
-        $term_name = $this->getTermName;
-        $term_slug = $this->getTermSlug;
+        $termData = $this->getTermData($request);
+        $term_name = $termData['name'];
+        $term_slug = $termData['slug'];
         
         if(empty($term_slug)){
            return view('admin.404', ['message' => 'Invalid Post Type']);
