@@ -62,7 +62,7 @@ class ProductImageSeeder extends Seeder
             }
         }
 
-        $this->command->info('✅ Product images updated successfully!');
+        $this->command->info('Product images updated successfully!');
     }
 }
 

@@ -149,7 +149,7 @@ class CustomRolePermissionSeeder extends Seeder
             ]);
         }
 
-        $this->command->info('✅ Custom roles and permissions created successfully!');
+        $this->command->info('Custom roles and permissions created successfully!');
     }
 }
 

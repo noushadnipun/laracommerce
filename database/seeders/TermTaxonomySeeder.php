@@ -34,6 +34,6 @@ class TermTaxonomySeeder extends Seeder
             );
         }
 
-        $this->command->info('✅ Term Taxonomies seeded successfully!');
+        $this->command->info('Term Taxonomies seeded successfully!');
     }
 }

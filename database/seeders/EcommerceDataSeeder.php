@@ -23,8 +23,8 @@ class EcommerceDataSeeder extends Seeder
             ProductCouponSeeder::class,
         ]);
         
-        $this->command->info('✅ Ecommerce data seeded successfully!');
-        $this->command->info('📊 Data Summary:');
+        $this->command->info('Ecommerce data seeded successfully!');
+        $this->command->info('Data Summary:');
         $this->command->info('   - Categories: ' . DB::table('categories')->count());
         $this->command->info('   - Brands: ' . DB::table('product_brands')->count());
         $this->command->info('   - Products: ' . DB::table('products')->count());

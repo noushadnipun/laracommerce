@@ -57,6 +57,6 @@ class StoreSettingsSeeder extends Seeder
             );
         }
 
-        $this->command->info('✅ Store Settings seeded successfully!');
+        $this->command->info('Store Settings seeded successfully!');
     }
 }
