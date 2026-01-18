@@ -3210,7 +3210,11 @@
             // Load more reviews
             $('#load-more-reviews').click(function() {
                 // This would load more reviews via AJAX
-                showNotification('Load more reviews functionality will be implemented soon!', 'info');
+                if (typeof ElegantNotification !== 'undefined') {
+                    ElegantNotification.info('Load more reviews functionality will be implemented soon!');
+                } else {
+                    alert('Load more reviews functionality will be implemented soon!');
+                }
             });
         }
         
@@ -3226,24 +3230,6 @@
                     }
                 }
             });
-        }
-        
-        // Notification system
-        function showNotification(message, type) {
-            var alertClass = type === 'success' ? 'alert-success' : (type === 'error' ? 'alert-danger' : 'alert-info');
-            var notification = '<div class="alert ' + alertClass + ' alert-dismissible fade show position-fixed" style="top: 20px; right: 20px; z-index: 9999; min-width: 300px;">' +
-                '<strong>' + (type === 'success' ? 'Success!' : (type === 'error' ? 'Error!' : 'Info!')) + '</strong> ' + message +
-                '<button type="button" class="close" data-dismiss="alert" aria-label="Close">' +
-                '<span aria-hidden="true">&times;</span>' +
-                '</button>' +
-                '</div>';
-            
-            $('body').append(notification);
-            
-            // Auto remove after 5 seconds
-            setTimeout(function() {
-                $('.alert').fadeOut();
-            }, 5000);
         }
     </script>
 @endsection

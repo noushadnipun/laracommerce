@@ -120,38 +120,11 @@ $getProductCats = \App\Models\ProductCategory::where('visibility', '1')->where('
 <!--Offcanvas menu area end-->
 
 <!--header area start-->
-<header>
-    <!-- Slim Promo/Info Bar -->
-    <div class="header_promo_bar" id="headerPromoBar" style="background:#0f274b;color:#cfd8e3;font-size:13px;position:relative;">
-        <div class="container-fluid">
-            <div class="row align-items-center" style="min-height:34px;">
-                <div class="col-md-4 d-none d-md-block">
-                    <div style="display:flex;align-items:center;gap:8px;">
-                        <i class="fa fa-truck"></i>
-                        <span>Free shipping on orders over ৳1,000</span>
-                    </div>
-                </div>
-                <div class="col-md-4 text-center">
-                    <div style="display:inline-flex;align-items:center;gap:8px;">
-                        <i class="fa fa-refresh"></i>
-                        <span>7‑day easy returns</span>
-                    </div>
-                </div>
-                <div class="col-md-4 text-md-right d-none d-md-block">
-                    <div style="display:inline-flex;align-items:center;gap:8px;">
-                        <i class="fa fa-phone"></i>
-                        <span>Hotline: <a href="tel:{{$companyPhone}}" style="color:#fff;text-decoration:none;">{{$companyPhone}}</a></span>
-                    </div>
-                </div>
-                <button type="button" id="promoBarClose" aria-label="Close" style="position:absolute;right:10px;top:6px;background:transparent;border:0;color:#cfd8e3;font-size:16px;line-height:1;cursor:pointer;">×</button>
-            </div>
-        </div>
-    </div>
-    
+<header>    
     <div class="main_header">
         <!--header top start-->
-        <div class="header_top">
-            <div class="container-fluid">  
+        <div class="header_top row justify-content-center">
+            <div class="col-lg-10">  
                 <div class="row align-items-center">
                     <div class="col-lg-6 col-md-6">
                         <div class="support_info">
@@ -193,8 +166,8 @@ $getProductCats = \App\Models\ProductCategory::where('visibility', '1')->where('
         </div>
         <!--header top start-->
         <!--header middel start-->
-        <div class="header_middle">
-        <div class="container-fluid py-2" style="background:#ffffff;">
+        <div class="header_middle row justify-content-center mx-0 py-2 align-item-center">
+        <div class="col-lg-10" style="background:#ffffff;">
             <div class="row g-2 align-items-center">
                 <div class="col-lg-2 col-md-3 col-6 d-flex align-items-center gap-2">
                     <a href="javascript:void(0)" class="d-lg-none"><i class="ion-navicon" style="font-size:20px;color:#0063d1"></i></a>
@@ -216,10 +189,10 @@ $getProductCats = \App\Models\ProductCategory::where('visibility', '1')->where('
                                             @endforeach
                                         </select>                        
                                     </div>
-                                    <div class="search_box" style="flex:1 1 auto;display:flex;align-items:center;border:1px solid #d9e1ec;border-radius:24px;padding:4px 6px;">
+                                    <div class="search_box" style="flex:1 1 auto;display:flex;align-items:center;padding:4px 6px;">
                                         <i class="fa fa-search" style="color:#9fb4c9;margin:0 8px"></i>
                                         <input placeholder="Search essentials, groceries and more..." type="text" name="search" required style="width:100%;border:0;outline:0;">
-                                        <button type="submit" class="btn btn-primary" style="border-radius:20px;padding:6px 16px;">Search</button> 
+                                        <button type="submit" class="btn btn-primary">Search</button> 
                                     </div>
                                 </form>
                             </div>
@@ -260,8 +233,8 @@ $getProductCats = \App\Models\ProductCategory::where('visibility', '1')->where('
         </div>
         <!--header middel end-->
         <!--header bottom satrt-->
-        <div class="main_menu_area" style="padding-top:6px;padding-bottom:6px;">
-            <div class="container-fluid">
+        <div class="main_menu_area row justify-content-center">
+            <div class="col-lg-10">
                 <div class="row align-items-center">
                     <div class="col-lg-3 col-md-12 d-none d-lg-block">
                         <div class="categories_menu">
@@ -332,23 +305,7 @@ $getProductCats = \App\Models\ProductCategory::where('visibility', '1')->where('
     </div> 
 </header>
 <!--header area end-->
-<script>
-    (function(){
-        try{
-            var key = 'promoBarClosed';
-            var bar = document.getElementById('headerPromoBar');
-            var btn = document.getElementById('promoBarClose');
-            if(!bar || !btn) return;
-            if(localStorage.getItem(key) === '1'){
-                bar.style.display = 'none';
-            }
-            btn.addEventListener('click', function(){
-                bar.style.display = 'none';
-                try{ localStorage.setItem(key, '1'); }catch(e){}
-            });
-        }catch(e){}
-    })();
- </script>
+
 
 <!--sticky header area start-->
 <div class="sticky_header_area sticky-header">

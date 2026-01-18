@@ -12,21 +12,44 @@ return new class extends Migration
      */
     public function up(): void
     {
-        // First, let's check if we have existing data
+        // Check if the table exists and has the column
+        if (!Schema::hasTable('product_attribute_values')) {
+            return;
+        }
+        
+        // Check if we have existing data
         $hasData = DB::table('product_attribute_values')->count() > 0;
         
-        if ($hasData) {
-            // If we have data, we need to handle it carefully
-            // For now, let's just rename the column without foreign key constraint
+        if (Schema::hasColumn('product_attribute_values', 'attributes_id')) {
+            if ($hasData) {
+                // If we have data, we need to handle it carefully
+                // For now, let's just rename the column without foreign key constraint
+                Schema::table('product_attribute_values', function (Blueprint $table) {
+                    // Try to drop foreign key if it exists
+                    try {
+                        $table->dropForeign(['attributes_id']);
+                    } catch (Exception $e) {
+                        // Foreign key doesn't exist, continue
+                    }
+                    $table->renameColumn('attributes_id', 'attribute_id');
+                });
+            } else {
+                // If no data, we can safely drop and recreate
+                Schema::table('product_attribute_values', function (Blueprint $table) {
+                    // Try to drop foreign key if it exists
+                    try {
+                        $table->dropForeign(['attributes_id']);
+                    } catch (Exception $e) {
+                        // Foreign key doesn't exist, continue
+                    }
+                    $table->dropColumn('attributes_id');
+                    $table->foreignId('attribute_id')->after('id')
+                          ->constrained('product_attributes')->onDelete('cascade');
+                });
+            }
+        } elseif (!Schema::hasColumn('product_attribute_values', 'attribute_id')) {
+            // If neither column exists, add the correct one
             Schema::table('product_attribute_values', function (Blueprint $table) {
-                $table->dropForeign(['attributes_id']);
-                $table->renameColumn('attributes_id', 'attribute_id');
-            });
-        } else {
-            // If no data, we can safely drop and recreate
-            Schema::table('product_attribute_values', function (Blueprint $table) {
-                $table->dropForeign(['attributes_id']);
-                $table->dropColumn('attributes_id');
                 $table->foreignId('attribute_id')->after('id')
                       ->constrained('product_attributes')->onDelete('cascade');
             });

@@ -7824,13 +7824,11 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
 }
 
 .dashboard_content h3 {
-  font-size: 22px;
   text-transform: capitalize;
   font-weight: 500;
   margin-bottom: 15px;
 }
 .dashboard_content h4 {
-  font-size: 20px;
   text-transform: capitalize;
   font-weight: 500;
   margin-bottom: 10px;

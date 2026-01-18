@@ -28,6 +28,7 @@ class User extends Authenticatable
         'postcode',
         'district',
         'ip_address',
+        'is_active',
     ];
 
     /**

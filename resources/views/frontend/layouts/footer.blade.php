@@ -1,8 +1,8 @@
  <!--footer area start-->
     <footer class="footer_widgets" style="background: #ffffff;">
         <!-- Newsletter Section -->
-        <div class="newsletter-section" style="background: #004c91; color: white; padding: 40px 0;">
-            <div class="container-fluid">
+        <div class="newsletter-section row justify-content-center" style="background: #004c91; color: white; padding: 40px 0;">
+            <div class="col-lg-10">
                 <div class="row align-items-center">
                     <div class="col-lg-8 mb-3 mb-lg-0">
                         <h2 style="margin: 0; font-size: 24px; font-weight: 600;">Stay in the loop</h2>
@@ -19,8 +19,8 @@
         </div>
 
         <!-- Main Footer -->
-        <div class="footer_top" style="background: #ffffff; padding: 40px 0 30px 0;">
-            <div class="container-fluid">
+        <div class="footer_top row justify-content-center" style="background: #ffffff; padding: 40px 0 30px 0;">
+            <div class="col-lg-10">
                 <div class="row">
                     <!-- Company Info -->
                     <div class="col-lg-2 col-md-6 mb-1">
@@ -162,8 +162,8 @@
         </div>
 
         <!-- Bottom -->
-        <div class="footer_bottom" style="background: #f8f9fa; color: #6c757d; border-top: 1px solid #e9ecef; padding: 10px;">
-            <div class="container-fluid">
+        <div class="footer_bottom row justify-content-center" style="background: #f8f9fa; color: #6c757d; border-top: 1px solid #e9ecef; padding: 10px;">
+            <div class="col-lg-10">
                 <div class="row align-items-center py-0">
                     <div class="col-md-6">
                         <div class="copyright_area">
@@ -186,13 +186,4 @@
     
 
 
-<!-- JS
-============================================ -->
 
-@include('frontend.layouts.js')
-
-
-
-</body>
-</html>
-</html>

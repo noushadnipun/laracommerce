@@ -223,41 +223,10 @@ class CheckoutHelper
     }
 
     /**
-     * Get payment methods
+     * Get payment methods (deprecated - use PaymentMethodService instead)
      */
     public static function getPaymentMethods()
     {
-        return [
-            'cash' => [
-                'name' => 'Cash On Delivery',
-                'description' => 'Pay when you receive the product',
-                'icon' => 'fas fa-money-bill-wave',
-                'available' => true,
-            ],
-            'ssl' => [
-                'name' => 'SSL Commerz',
-                'description' => 'Pay via Credit/Debit Card',
-                'icon' => 'fas fa-credit-card',
-                'available' => true,
-            ],
-            'bkash' => [
-                'name' => 'bKash',
-                'description' => 'Pay via bKash Mobile Banking',
-                'icon' => 'fas fa-mobile-alt',
-                'available' => true,
-            ],
-            'nagad' => [
-                'name' => 'Nagad',
-                'description' => 'Pay via Nagad Mobile Banking',
-                'icon' => 'fas fa-mobile-alt',
-                'available' => true,
-            ],
-            'rocket' => [
-                'name' => 'Rocket',
-                'description' => 'Pay via Rocket Mobile Banking',
-                'icon' => 'fas fa-mobile-alt',
-                'available' => true,
-            ],
-        ];
+        return \App\Services\PaymentMethodService::getEnabledMethods();
     }
 }

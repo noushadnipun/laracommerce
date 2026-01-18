@@ -12,6 +12,46 @@
 </style>
 
 <ul class="navbar-nav ml-auto">
+    <!-- Low Stock Notifications -->
+    @php
+        $lowStockCount = \App\Models\Product::whereHas('inventory', function($query) {
+            $query->whereRaw('current_stock <= low_stock_threshold')
+                  ->where('current_stock', '>', 0);
+        })->count();
+        
+        $outOfStockCount = \App\Models\Product::whereHas('inventory', function($query) {
+            $query->where('current_stock', '<=', 0);
+        })->count();
+        
+        $totalStockAlerts = $lowStockCount + $outOfStockCount;
+    @endphp
+    
+    @if($totalStockAlerts > 0)
+    <li class="nav-item dropdown">
+        <a class="nav-link" data-toggle="dropdown" href="#" title="Stock Alerts">
+            <i class="fas fa-exclamation-triangle text-warning"></i>
+            <span class="badge badge-warning navbar-badge">{{ $totalStockAlerts }}</span>
+        </a>
+        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+            <span class="dropdown-item dropdown-header">{{ $totalStockAlerts }} Stock Alerts</span>
+            <div class="dropdown-divider"></div>
+            @if($lowStockCount > 0)
+            <a href="{{ route('admin_inventory_index') }}?stock_status=low_stock" class="dropdown-item">
+                <i class="fas fa-exclamation-triangle text-warning mr-2"></i> {{ $lowStockCount }} Low Stock Products
+            </a>
+            <div class="dropdown-divider"></div>
+            @endif
+            @if($outOfStockCount > 0)
+            <a href="{{ route('admin_inventory_index') }}?stock_status=out_of_stock" class="dropdown-item">
+                <i class="fas fa-times-circle text-danger mr-2"></i> {{ $outOfStockCount }} Out of Stock Products
+            </a>
+            <div class="dropdown-divider"></div>
+            @endif
+            <a href="{{ route('admin_inventory_index') }}" class="dropdown-item dropdown-footer">Manage All Inventory</a>
+        </div>
+    </li>
+    @endif
+    
     <li class="nav-item nav-link text-success">
         <a class="" href="{{url('/')}}" target="_blank"><i class="fa fa-globe"></i> Website</a>   
     </li>

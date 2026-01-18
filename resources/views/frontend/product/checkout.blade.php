@@ -30,6 +30,7 @@
                 <div class="row">
                     <div class="col-lg-6 col-md-6">
                         <div class="account_login_form">
+                            @auth
                             <form action="{{route('frontend_customer_address_update')}}" method="post">
                                 <h3>Billing Details</h3>
                                 @csrf
@@ -64,10 +65,39 @@
                                     <button type="submit" class="btn btn-dark">Save</button>
                                 </div>
                             </form>
+                            @endauth
+                            @guest
+                            <h3>Billing Details</h3>
+                            <div class="guest_billing_fields">
+                                <label>Full Name <span class="text-danger">*</span></label>
+                                <input type="text" form="orderSubmitForm" name="name" value="" required>
+
+                                <label>Address <span class="text-danger">*</span></label>
+                                <input type="text" form="orderSubmitForm" name="address" value="" required>
+
+                                <label>Thana <span class="text-danger">*</span></label>
+                                <input type="text" form="orderSubmitForm" name="thana" value="" required>
+
+                                <label>Postal Code <span class="text-danger">*</span></label>
+                                <input type="text" form="orderSubmitForm" name="postal_code" value="" required>
+
+                                <label>City <span class="text-danger">*</span></label>
+                                <input type="text" form="orderSubmitForm" name="city" value="" required>
+
+                                <label>Country <span class="text-danger">*</span></label>
+                                <input type="text" form="orderSubmitForm" name="country" value="Bangladesh" required>
+
+                                <label>Phone <span class="text-danger">*</span></label>
+                                <input type="text" form="orderSubmitForm" name="phone" value="" required>
+
+                                <label>Email</label>
+                                <input type="email" form="orderSubmitForm" name="email" value="">
+                            </div>
+                            @endguest
                         </div>
                     </div>
                     <div class="col-lg-6 col-md-6">
-                        <form action="{{route('frontend_checkout_done')}}" method="POST">  
+                        <form id="orderSubmitForm" action="{{route('frontend_checkout_done')}}" method="POST">  
                             @csrf  
                             <h3>Your order</h3> 
                             <div class="order_table table-responsive">
@@ -166,13 +196,16 @@
                                 </div>
 
                                 <div class="order_button">
-                                    <input type="hidden" name="name" value="{{!empty($address) ? $address->name : ''}}">
-                                    <input type="hidden" name="address" value="{{!empty($address) ? $address->address : ''}}">
-                                    <input type="hidden" name="thana" value="{{!empty($address) ? $address->thana : ''}}">
-                                    <input type="hidden" name="postal_code" value="{{!empty($address) ? $address->postal_code : ''}}">
-                                    <input type="hidden" name="city" value="{{!empty($address) ? $address->city : ''}}">
-                                    <input type="hidden" name="country" value="{{!empty($address) ? $address->country : 'Bangladesh'}}">
-                                    <input type="hidden" name="phone" value="{{!empty($address) ? $address->phone : ''}}">
+                                    @auth
+                                        @php $address = \App\Models\UserAddressBook::where('user_id', Auth::user()->id)->first(); @endphp
+                                        <input type="hidden" name="name" value="{{!empty($address) ? $address->name : ''}}">
+                                        <input type="hidden" name="address" value="{{!empty($address) ? $address->address : ''}}">
+                                        <input type="hidden" name="thana" value="{{!empty($address) ? $address->thana : ''}}">
+                                        <input type="hidden" name="postal_code" value="{{!empty($address) ? $address->postal_code : ''}}">
+                                        <input type="hidden" name="city" value="{{!empty($address) ? $address->city : ''}}">
+                                        <input type="hidden" name="country" value="{{!empty($address) ? $address->country : 'Bangladesh'}}">
+                                        <input type="hidden" name="phone" value="{{!empty($address) ? $address->phone : ''}}">
+                                    @endauth
                                     <input type="hidden" name="shippingCost" value='{{$shippingCost}}'>
                                     <button  type="submit">Proceed to Checkout</button> 
                                 </div>    

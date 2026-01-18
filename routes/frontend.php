@@ -21,6 +21,10 @@ Route::group([
     Route::get('products/{slug}', 'HomeController@singleProduct')->name('single_product');
     Route::get('product/category/{slug}', 'HomeController@singleProductCategory')->name('single_product_category');
     Route::get('product/brand/{slug}', 'HomeController@singleProductBrand')->name('single_product_brand');
+    
+    //product tracking
+    Route::post('product/track/click', 'ProductController@trackClick')->name('product_track_click');
+    Route::get('product/track/click/{productId}', 'ProductController@trackClickGet')->name('product_track_click_get');
 
      //cart
      Route::get('my/cart/', 'CartController@index')->name('cart_index');

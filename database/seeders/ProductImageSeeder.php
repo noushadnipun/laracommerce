@@ -76,3 +76,5 @@ class ProductImageSeeder extends Seeder
 
 
 
+
+

@@ -47,6 +47,7 @@ class ProductOrder extends Model
         'tax_amount',
         'discount_amount',
         'final_amount',
+        'tran_id', // Add tran_id to fillable
     ];
 
     protected $casts = [

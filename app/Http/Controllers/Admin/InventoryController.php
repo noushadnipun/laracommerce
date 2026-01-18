@@ -134,11 +134,8 @@ class InventoryController extends Controller
             }
         }
         
-        // Update product table
-        $product->update([
-            'current_stock' => $inventory->current_stock,
-            'total_stock' => $inventory->total_stock
-        ]);
+        // Note: Stock data is now managed in the inventory table only
+        // The products table no longer has current_stock and total_stock columns
         
         return back()->with('success', 'Inventory updated successfully!');
     }
@@ -169,11 +166,8 @@ class InventoryController extends Controller
             $inventory->updateStock('in', $request->quantity, $request->notes ?? 'Stock added manually', 'manual_addition');
         }
         
-        // Update product table
-        $product->update([
-            'current_stock' => $inventory->current_stock,
-            'total_stock' => $inventory->total_stock
-        ]);
+        // Note: Stock data is now managed in the inventory table only
+        // The products table no longer has current_stock and total_stock columns
         
         return back()->with('success', "Added {$request->quantity} units to stock!");
     }
@@ -197,11 +191,8 @@ class InventoryController extends Controller
         
         $inventory->updateStock('out', $request->quantity, $request->notes ?? 'Stock removed manually', 'manual_removal');
         
-        // Update product table
-        $product->update([
-            'current_stock' => $inventory->current_stock,
-            'total_stock' => $inventory->total_stock
-        ]);
+        // Note: Stock data is now managed in the inventory table only
+        // The products table no longer has current_stock and total_stock columns
         
         return back()->with('success', "Removed {$request->quantity} units from stock!");
     }

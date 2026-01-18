@@ -43,3 +43,5 @@ class EcommerceDataSeeder extends Seeder
 
 
 
+
+

@@ -17,20 +17,22 @@ class SpatieRoleMiddleware
             return redirect()->route('login');
         }
 
-        // Check if user has the required role using your existing role system
         $user = auth()->user();
         
-        // Check role by role_id (your existing system)
-        if ($role === 'admin' && $user->role_id != 1) {
-            abort(403, 'Admin access required.');
+        // Handle multiple roles separated by pipe (|)
+        $roles = explode('|', $role);
+        
+        // Check if user has any of the required roles
+        $hasRole = false;
+        foreach ($roles as $requiredRole) {
+            if ($user->hasRole($requiredRole)) {
+                $hasRole = true;
+                break;
+            }
         }
         
-        if ($role === 'editor' && $user->role_id != 2) {
-            abort(403, 'Editor access required.');
-        }
-        
-        if ($role === 'customer' && $user->role_id != 3) {
-            abort(403, 'Customer access required.');
+        if (!$hasRole) {
+            abort(403, 'Insufficient permissions. Required role: ' . $role);
         }
 
         return $next($request);

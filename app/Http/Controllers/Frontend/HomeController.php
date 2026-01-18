@@ -75,8 +75,8 @@ class HomeController extends Controller
         $products = $query->with(['category', 'brand'])->paginate(20);
         
         // Get categories and brands for filters
-        $categories = ProductCategory::where('status', '1')->get();
-        $brands = ProductBrand::where('status', '1')->get();
+        $categories = ProductCategory::where('visibility', '1')->get();
+        $brands = ProductBrand::where('visibility', '1')->get();
         
         return view('frontend.product.products', compact('products', 'categories', 'brands'));
     }

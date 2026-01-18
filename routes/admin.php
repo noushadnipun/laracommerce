@@ -4,7 +4,7 @@ Route::group([
     'prefix'=> 'admin/', 
     'namespace'=> 'App\Http\Controllers\Admin', 
     'as' => 'admin_', 
-    'middleware' => ['auth', 'role:admin']
+    'middleware' => ['auth', 'role:super-admin|admin|manager|editor']
 ], function(){
     
     Route::get('dashboard', 'DashboardController@index')->name('dashboard');
@@ -164,6 +164,19 @@ Route::group([
     //Store Settings
     Route::get('seetings/store/view', 'StoreSettingController@index')->name('product_store_settings_index');
     Route::post('seetings/store/update', 'StoreSettingController@update')->name('product_store_settings_update');
+    
+    // User Management (Only Super Admin and Admin)
+    Route::group(['middleware' => ['role:super-admin|admin']], function() {
+        Route::resource('users', 'UserManagementController');
+        Route::post('users/{user}/toggle-status', 'UserManagementController@toggleStatus')->name('users.toggle-status');
+        
+        // Role Management
+        Route::resource('roles', 'RoleManagementController');
+        
+        // Permission Management
+        Route::resource('permissions', 'PermissionManagementController');
+        Route::post('permissions/bulk-create', 'PermissionManagementController@bulkCreate')->name('permissions.bulk-create');
+    });
 });
 
 ?>

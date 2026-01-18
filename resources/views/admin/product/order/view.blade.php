@@ -48,12 +48,6 @@ Order Details - {{ $order->order_code }}
                             <h6>Order Details</h6>
                             <p><strong>Order Code:</strong> {{ $order->order_code }}</p>
                             <p><strong>Order Date:</strong> {{ $order->created_at->format('M d, Y h:i A') }}</p>
-                            <p><strong>Payment Method:</strong> {{ $order->payment_type }}</p>
-                            <p><strong>Payment Status:</strong> 
-                                <span class="badge badge-{{ $order->payment_status == 'Paid' ? 'success' : 'warning' }}">
-                                    {{ $order->payment_status }}
-                                </span>
-                            </p>
                             @if($order->tracking_number)
                             <p><strong>Tracking Number:</strong> {{ $order->tracking_number }}</p>
                             @endif
@@ -62,6 +56,129 @@ Order Details - {{ $order->order_code }}
                             @endif
                         </div>
                     </div>
+                </div>
+            </div>
+
+            <!-- Payment Information -->
+            <div class="card mb-4 payment-info-card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-credit-card"></i> Payment Information
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6>Payment Details</h6>
+                            <table class="table table-sm table-borderless">
+                                <tr>
+                                    <td><strong>Payment Method:</strong></td>
+                                    <td>
+                                        <span class="badge badge-info payment-status-badge">{{ $order->payment_type ?? 'N/A' }}</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Payment Status:</strong></td>
+                                    <td>
+                                        @php
+                                            $paymentStatusClass = match($order->payment_status) {
+                                                'Paid' => 'success',
+                                                'Pending' => 'warning',
+                                                'Failed' => 'danger',
+                                                'Cancelled' => 'secondary',
+                                                'Refunded' => 'info',
+                                                default => 'secondary'
+                                            };
+                                        @endphp
+                                        <span class="badge badge-{{ $paymentStatusClass }} payment-status-badge">
+                                            {{ $order->payment_status ?? 'Unknown' }}
+                                        </span>
+                                    </td>
+                                </tr>
+                                @if($order->tran_id)
+                                <tr>
+                                    <td><strong>Transaction ID:</strong></td>
+                                    <td>
+                                        <code>{{ $order->tran_id }}</code>
+                                        <button class="btn btn-sm btn-outline-secondary ml-2" onclick="copyToClipboard('{{ $order->tran_id }}', this)">
+                                            <i class="fas fa-copy"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                @endif
+                                <tr>
+                                    <td><strong>Currency:</strong></td>
+                                    <td>{{ $order->currency ?? 'BDT' }}</td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="col-md-6">
+                            <h6>Amount Breakdown</h6>
+                            <div class="amount-breakdown">
+                                <table class="table table-sm table-borderless">
+                                    <tr>
+                                        <td><strong>Subtotal:</strong></td>
+                                        <td class="text-right">৳{{ number_format($order->orderDetails->sum('display_line_total'), 2) }}</td>
+                                    </tr>
+                                    @if($order->shipping_cost > 0)
+                                    <tr>
+                                        <td><strong>Shipping:</strong></td>
+                                        <td class="text-right">৳{{ number_format($order->shipping_cost, 2) }}</td>
+                                    </tr>
+                                    @endif
+                                    @if($order->tax_amount > 0)
+                                    <tr>
+                                        <td><strong>Tax:</strong></td>
+                                        <td class="text-right">৳{{ number_format($order->tax_amount, 2) }}</td>
+                                    </tr>
+                                    @endif
+                                    @if($order->discount_amount > 0)
+                                    <tr>
+                                        <td><strong>Discount:</strong></td>
+                                        <td class="text-right text-success">-৳{{ number_format($order->discount_amount, 2) }}</td>
+                                    </tr>
+                                    @endif
+                                    <tr class="border-top">
+                                        <td><strong>Total Amount:</strong></td>
+                                        <td class="text-right">
+                                            <strong class="text-primary">৳{{ number_format($order->orderDetails->sum('display_line_total') + ($order->shipping_cost ?? 0) + ($order->tax_amount ?? 0) - ($order->discount_amount ?? 0) - ($order->coupone_discount ?? 0), 2) }}</strong>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    @if($order->payment_status === 'Paid' && $order->tran_id)
+                    <div class="mt-3">
+                        <h6>Payment Verification</h6>
+                        <div class="alert alert-success payment-verification">
+                            <i class="fas fa-check-circle"></i>
+                            <strong>Payment Verified:</strong> This order has been successfully paid via {{ $order->payment_type }}.
+                            Transaction ID: <code>{{ $order->tran_id }}</code>
+                        </div>
+                    </div>
+                    @elseif($order->payment_status === 'Pending')
+                    <div class="mt-3">
+                        <div class="alert alert-warning payment-verification">
+                            <i class="fas fa-clock"></i>
+                            <strong>Payment Pending:</strong> This order is awaiting payment confirmation.
+                            @if($order->payment_type === 'SSLCommerz')
+                                <br><small>For online payments, please verify the transaction status with the payment gateway.</small>
+                            @endif
+                        </div>
+                    </div>
+                    @elseif($order->payment_status === 'Failed')
+                    <div class="mt-3">
+                        <div class="alert alert-danger payment-verification">
+                            <i class="fas fa-times-circle"></i>
+                            <strong>Payment Failed:</strong> The payment for this order has failed.
+                            @if($order->tran_id)
+                                <br><small>Transaction ID: <code>{{ $order->tran_id }}</code></small>
+                            @endif
+                        </div>
+                    </div>
+                    @endif
                 </div>
             </div>
 
@@ -90,13 +207,16 @@ Order Details - {{ $order->order_code }}
                                 <tr>
                                     <td>
                                         <div class="d-flex align-items-center">
-                                            @if($item->product && $item->product->getFeaturedImageUrl())
-                                                <img src="{{ $item->product->getFeaturedImageUrl() }}" 
+                                            @php
+                                                $img = $item->display_image;
+                                            @endphp
+                                            @if($img)
+                                                <img src="{{ $img }}" 
                                                      class="product-image mr-3" alt="Product">
                                             @endif
                                             <div>
-                                                <h6 class="mb-1">{{ $item->product->title ?? 'Product Not Found' }}</h6>
-                                                <small class="text-muted">SKU: {{ $item->product->code ?? 'N/A' }}</small>
+                                                <h6 class="mb-1">{{ $item->display_title }}</h6>
+                                                <small class="text-muted">SKU: {{ $item->display_code }}</small>
                                             </div>
                                         </div>
                                     </td>
@@ -112,8 +232,8 @@ Order Details - {{ $order->order_code }}
                                     <td>
                                         <span class="badge badge-info">{{ $item->qty }}</span>
                                     </td>
-                                    <td>৳{{ number_format($item->price / $item->qty, 2) }}</td>
-                                    <td><strong>৳{{ number_format($item->price, 2) }}</strong></td>
+                                    <td>৳{{ number_format($item->display_unit_price, 2) }}</td>
+                                    <td><strong>৳{{ number_format($item->display_line_total, 2) }}</strong></td>
                                     <td>
                                         @if(in_array($order->order_status, ['pending','processing']))
                                         <button type="button" class="btn btn-sm btn-outline-danger"
@@ -289,7 +409,7 @@ Order Details - {{ $order->order_code }}
                 <div class="card-body">
                     <div class="d-flex justify-content-between">
                         <span>Subtotal:</span>
-                        <span>৳{{ number_format($order->total_amount - $order->shipping_cost, 2) }}</span>
+                        <span>৳{{ number_format($order->orderDetails->sum('display_line_total'), 2) }}</span>
                     </div>
                     @if($order->shipping_cost > 0)
                     <div class="d-flex justify-content-between">
@@ -297,7 +417,18 @@ Order Details - {{ $order->order_code }}
                         <span>৳{{ number_format($order->shipping_cost, 2) }}</span>
                     </div>
                     @endif
-                    @if($order->coupone_discount > 0)
+                    @if($order->tax_amount > 0)
+                    <div class="d-flex justify-content-between">
+                        <span>Tax:</span>
+                        <span>৳{{ number_format($order->tax_amount, 2) }}</span>
+                    </div>
+                    @endif
+                    @if($order->discount_amount > 0)
+                    <div class="d-flex justify-content-between text-success">
+                        <span>Discount:</span>
+                        <span>-৳{{ number_format($order->discount_amount, 2) }}</span>
+                    </div>
+                    @elseif($order->coupone_discount > 0)
                     <div class="d-flex justify-content-between text-success">
                         <span>Discount:</span>
                         <span>-৳{{ number_format($order->coupone_discount, 2) }}</span>
@@ -306,7 +437,7 @@ Order Details - {{ $order->order_code }}
                     <hr>
                     <div class="d-flex justify-content-between">
                         <strong>Total:</strong>
-                        <strong>{{ $order->formatted_final_amount }}</strong>
+                        <strong>৳{{ number_format($order->orderDetails->sum('display_line_total') + ($order->shipping_cost ?? 0) + ($order->tax_amount ?? 0) - ($order->discount_amount ?? 0) - ($order->coupone_discount ?? 0), 2) }}</strong>
                     </div>
                 </div>
             </div>
@@ -530,6 +661,73 @@ Order Details - {{ $order->order_code }}
 @endsection
 
 @section('cusjs')
+<script>
+function copyToClipboard(text, buttonElement) {
+    // Try modern clipboard API first
+    if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(text).then(function() {
+            showCopySuccess(buttonElement);
+        }).catch(function(err) {
+            console.error('Clipboard API failed: ', err);
+            fallbackCopyTextToClipboard(text, buttonElement);
+        });
+    } else {
+        // Fallback for older browsers or non-secure contexts
+        fallbackCopyTextToClipboard(text, buttonElement);
+    }
+}
+
+function fallbackCopyTextToClipboard(text, buttonElement) {
+    var textArea = document.createElement("textarea");
+    textArea.value = text;
+    
+    // Avoid scrolling to bottom
+    textArea.style.top = "0";
+    textArea.style.left = "0";
+    textArea.style.position = "fixed";
+    textArea.style.opacity = "0";
+    
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
+    
+    try {
+        var successful = document.execCommand('copy');
+        if (successful) {
+            showCopySuccess(buttonElement);
+        } else {
+            showCopyError(text);
+        }
+    } catch (err) {
+        console.error('Fallback copy failed: ', err);
+        showCopyError(text);
+    }
+    
+    document.body.removeChild(textArea);
+}
+
+function showCopySuccess(buttonElement) {
+    if (buttonElement) {
+        var originalIcon = buttonElement.innerHTML;
+        buttonElement.innerHTML = '<i class="fas fa-check"></i>';
+        buttonElement.classList.add('btn-success');
+        buttonElement.classList.remove('btn-outline-secondary');
+        
+        setTimeout(function() {
+            buttonElement.innerHTML = originalIcon;
+            buttonElement.classList.remove('btn-success');
+            buttonElement.classList.add('btn-outline-secondary');
+        }, 2000);
+    } else {
+        alert('Transaction ID copied to clipboard!');
+    }
+}
+
+function showCopyError(text) {
+    alert('Failed to copy to clipboard. Please copy manually: ' + text);
+}
+</script>
+
 <style>
 .order-header {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -581,6 +779,49 @@ Order Details - {{ $order->order_code }}
     height: 60px;
     object-fit: cover;
     border-radius: 8px;
+}
+.payment-info-card {
+    border-left: 4px solid #28a745;
+}
+.payment-info-card .card-header {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #dee2e6;
+}
+.payment-status-badge {
+    font-size: 0.9em;
+    padding: 0.5em 0.75em;
+}
+.amount-breakdown {
+    background-color: #f8f9fa;
+    border-radius: 5px;
+    padding: 15px;
+}
+.amount-breakdown .table td {
+    padding: 0.25rem 0.5rem;
+    border: none;
+}
+.amount-breakdown .table tr.border-top td {
+    border-top: 1px solid #dee2e6 !important;
+    padding-top: 0.5rem;
+}
+.payment-verification {
+    border-radius: 8px;
+    padding: 15px;
+}
+.payment-verification.alert-success {
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+    color: #155724;
+}
+.payment-verification.alert-warning {
+    background-color: #fff3cd;
+    border-color: #ffeaa7;
+    color: #856404;
+}
+.payment-verification.alert-danger {
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+    color: #721c24;
 }
 .action-buttons .btn {
     margin: 2px;
@@ -676,10 +917,10 @@ function printOrder(orderId) {
                     <tbody>
                         @foreach($order->orderDetails as $item)
                         <tr>
-                            <td>{{ $item->product->title ?? 'Product Not Found' }}</td>
+                            <td>{{ $item->display_title }}</td>
                             <td>{{ $item->qty }}</td>
-                            <td>৳{{ number_format($item->price / $item->qty, 2) }}</td>
-                            <td>৳{{ number_format($item->price, 2) }}</td>
+                            <td>৳{{ number_format($item->display_unit_price, 2) }}</td>
+                            <td>৳{{ number_format($item->display_line_total, 2) }}</td>
                         </tr>
                         @endforeach
                     </tbody>

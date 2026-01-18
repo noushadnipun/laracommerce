@@ -317,8 +317,8 @@ class ProductHelper
     public static function getProductFilters()
     {
         return [
-            'categories' => ProductCategory::where('status', 1)->get(),
-            'brands' => ProductBrand::where('status', 1)->get(),
+            'categories' => ProductCategory::where('visibility', 1)->get(),
+            'brands' => ProductBrand::where('visibility', 1)->get(),
             'price_ranges' => [
                 ['min' => 0, 'max' => 1000, 'label' => 'Under ৳1,000'],
                 ['min' => 1000, 'max' => 5000, 'label' => '৳1,000 - ৳5,000'],

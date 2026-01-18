@@ -24,5 +24,6 @@ class VerifyCsrfToken extends Middleware
         'fail',
         'ipn',
         'pay-via-ajax', // only required to run example codes. Please see below.
+        'product/track/click', // Product click tracking
     ];
 }

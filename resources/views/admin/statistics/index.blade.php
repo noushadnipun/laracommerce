@@ -30,7 +30,7 @@ Product Statistics Dashboard
 
 <!-- Statistics Overview Cards -->
 <div class="row mb-4">
-    <div class="col-lg-3 col-md-6">
+    <div class="col-lg-2 col-md-4 col-sm-6">
         <div class="card bg-primary text-white">
             <div class="card-body">
                 <div class="d-flex justify-content-between">
@@ -45,13 +45,13 @@ Product Statistics Dashboard
             </div>
         </div>
     </div>
-    <div class="col-lg-3 col-md-6">
+    <div class="col-lg-2 col-md-4 col-sm-6">
         <div class="card bg-success text-white">
             <div class="card-body">
                 <div class="d-flex justify-content-between">
                     <div>
-                        <h4 class="mb-0">{{$overallStats['total_sales'] ?? 0}}</h4>
-                        <p class="mb-0">Total Sales</p>
+                        <h4 class="mb-0">{{$overallStats['total_orders'] ?? 0}}</h4>
+                        <p class="mb-0">Total Orders</p>
                     </div>
                     <div class="align-self-center">
                         <i class="fas fa-shopping-cart fa-2x"></i>
@@ -60,12 +60,12 @@ Product Statistics Dashboard
             </div>
         </div>
     </div>
-    <div class="col-lg-3 col-md-6">
+    <div class="col-lg-2 col-md-4 col-sm-6">
         <div class="card bg-info text-white">
             <div class="card-body">
                 <div class="d-flex justify-content-between">
                     <div>
-                        <h4 class="mb-0">${{number_format($overallStats['total_revenue'] ?? 0, 2)}}</h4>
+                        <h4 class="mb-0">৳{{number_format($overallStats['total_revenue'] ?? 0, 2)}}</h4>
                         <p class="mb-0">Total Revenue</p>
                     </div>
                     <div class="align-self-center">
@@ -75,12 +75,42 @@ Product Statistics Dashboard
             </div>
         </div>
     </div>
-    <div class="col-lg-3 col-md-6">
+    <div class="col-lg-2 col-md-4 col-sm-6">
         <div class="card bg-warning text-white">
             <div class="card-body">
                 <div class="d-flex justify-content-between">
                     <div>
-                        <h4 class="mb-0">{{$overallStats['total_wishlists'] ?? 0}}</h4>
+                        <h4 class="mb-0">{{$overallStats['total_units_sold'] ?? 0}}</h4>
+                        <p class="mb-0">Units Sold</p>
+                    </div>
+                    <div class="align-self-center">
+                        <i class="fas fa-box fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-2 col-md-4 col-sm-6">
+        <div class="card bg-danger text-white">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h4 class="mb-0">৳{{number_format($overallStats['average_order_value'] ?? 0, 2)}}</h4>
+                        <p class="mb-0">Avg Order Value</p>
+                    </div>
+                    <div class="align-self-center">
+                        <i class="fas fa-chart-line fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-2 col-md-4 col-sm-6">
+        <div class="card bg-secondary text-white">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h4 class="mb-0">{{$overallStats['total_wishlist_adds'] ?? 0}}</h4>
                         <p class="mb-0">Wishlist Adds</p>
                     </div>
                     <div class="align-self-center">
@@ -165,126 +195,336 @@ Product Statistics Dashboard
 </div>
 
 <!-- Charts Section -->
-<div class="row mb-4">
+<div class="row mb-3">
     <div class="col-lg-6">
         <div class="card">
-            <div class="card-header">
-                <h5 class="card-title mb-0">
+            <div class="card-header py-2">
+                <h6 class="card-title mb-0">
                     <i class="fas fa-chart-line"></i> Performance Over Time
-                </h5>
+                </h6>
             </div>
-            <div class="card-body">
-                <canvas id="viewsChart" height="300"></canvas>
+            <div class="card-body py-2">
+                <canvas id="viewsChart" height="200"></canvas>
             </div>
         </div>
     </div>
     <div class="col-lg-6">
         <div class="card">
-            <div class="card-header">
-                <h5 class="card-title mb-0">
+            <div class="card-header py-2">
+                <h6 class="card-title mb-0">
                     <i class="fas fa-chart-bar"></i> Sales by Category
-                </h5>
+                </h6>
             </div>
-            <div class="card-body">
-                <canvas id="salesChart" height="300"></canvas>
+            <div class="card-body py-2">
+                <canvas id="salesChart" height="200"></canvas>
             </div>
         </div>
     </div>
 </div>
 
-<div class="row mb-4">
+<div class="row mb-3">
     <div class="col-lg-4">
         <div class="card">
-            <div class="card-header">
-                <h5 class="card-title mb-0">
+            <div class="card-header py-2">
+                <h6 class="card-title mb-0">
                     <i class="fas fa-chart-pie"></i> Revenue Distribution
-                </h5>
+                </h6>
             </div>
-            <div class="card-body">
-                <canvas id="revenueChart" height="300"></canvas>
+            <div class="card-body py-2">
+                <canvas id="revenueChart" height="200"></canvas>
             </div>
         </div>
     </div>
     <div class="col-lg-8">
         <div class="card">
-            <div class="card-header">
-                <h5 class="card-title mb-0">
+            <div class="card-header py-2">
+                <h6 class="card-title mb-0">
                     <i class="fas fa-chart-radar"></i> Top Products Performance
-                </h5>
+                </h6>
             </div>
-            <div class="card-body">
-                <canvas id="topProductsChart" height="300"></canvas>
+            <div class="card-body py-2">
+                <canvas id="topProductsChart" height="200"></canvas>
             </div>
         </div>
     </div>
 </div>
 
-<!-- Top Products -->
-<div class="row">
+<!-- Sell Report Section -->
+<div class="row mb-4">
     <div class="col-12">
         <div class="card">
             <div class="card-header bg-success text-white">
                 <div class="d-flex justify-content-between align-items-center">
                     <h3 class="card-title mb-0">
-                        <i class="fas fa-trophy"></i> Top Performing Products
+                        <i class="fas fa-chart-bar"></i> Comprehensive Sell Report
                     </h3>
                     <div class="btn-group btn-group-sm">
-                        <a href="{{route('admin_statistics_export')}}" class="btn btn-light btn-sm">
-                            <i class="fas fa-download"></i> Export
-                        </a>
-                        <button type="button" class="btn btn-light btn-sm dropdown-toggle dropdown-toggle-split" data-toggle="dropdown">
-                            <span class="sr-only">Toggle Dropdown</span>
+                        <button type="button" class="btn btn-light btn-sm" onclick="exportSellReport()">
+                            <i class="fas fa-download"></i> Export Report
                         </button>
-                        <div class="dropdown-menu">
-                            <a class="dropdown-item" href="{{route('admin_statistics_export', ['type' => 'monthly'])}}">
-                                <i class="fas fa-calendar-alt"></i> Monthly Report
-                            </a>
-                            <a class="dropdown-item" href="{{route('admin_statistics_export', ['type' => 'yearly'])}}">
-                                <i class="fas fa-calendar"></i> Yearly Report
-                            </a>
-                            <a class="dropdown-item" href="{{route('admin_statistics_export', ['type' => 'trends'])}}">
-                                <i class="fas fa-chart-line"></i> Trends Analysis
-                            </a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="{{route('admin_statistics_export', ['type' => 'detailed'])}}">
-                                <i class="fas fa-file-alt"></i> Detailed Report
-                            </a>
-                        </div>
+                        <button type="button" class="btn btn-light btn-sm" onclick="printSellReport()">
+                            <i class="fas fa-print"></i> Print
+                        </button>
                     </div>
                 </div>
             </div>
-            <div class="card-body p-0">
+            <div class="card-body">
+                <!-- Sales Analytics Tabs -->
+                <ul class="nav nav-tabs" id="sellReportTabs" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="recent-sales-tab" data-toggle="tab" href="#recent-sales" role="tab">
+                            <i class="fas fa-clock"></i> Recent Sales
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="payment-methods-tab" data-toggle="tab" href="#payment-methods" role="tab">
+                            <i class="fas fa-credit-card"></i> Payment Methods
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="order-status-tab" data-toggle="tab" href="#order-status" role="tab">
+                            <i class="fas fa-tasks"></i> Order Status
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="top-products-tab" data-toggle="tab" href="#top-products" role="tab">
+                            <i class="fas fa-trophy"></i> Top Products
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="customer-analytics-tab" data-toggle="tab" href="#customer-analytics" role="tab">
+                            <i class="fas fa-users"></i> Customer Analytics
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="product-interactions-tab" data-toggle="tab" href="#product-interactions" role="tab">
+                            <i class="fas fa-mouse-pointer"></i> Product Interactions
+                        </a>
+                    </li>
+                </ul>
+                
+                <div class="tab-content mt-3" id="sellReportTabContent">
+                    <!-- Recent Sales Tab -->
+                    <div class="tab-pane fade show active" id="recent-sales" role="tabpanel">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead class="thead-light">
+                                    <tr>
+                                        <th>Order Code</th>
+                                        <th>Customer</th>
+                                        <th>Date</th>
+                                        <th>Amount</th>
+                                        <th>Payment Status</th>
+                                        <th>Order Status</th>
+                                        <th>Payment Method</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @forelse($recentSales as $sale)
+                                    <tr>
+                                        <td>
+                                            <a href="{{route('admin_product_order_view', $sale->id)}}" class="text-primary">
+                                                {{$sale->order_code}}
+                                            </a>
+                                        </td>
+                                        <td>{{$sale->customer_name}}</td>
+                                        <td>{{ is_string($sale->created_at) ? \Carbon\Carbon::parse($sale->created_at)->format('M d, Y H:i') : $sale->created_at->format('M d, Y H:i') }}</td>
+                                        <td><strong>৳{{number_format($sale->final_amount, 2)}}</strong></td>
+                                        <td>
+                                            <span class="badge badge-{{$sale->payment_status == 'Paid' ? 'success' : ($sale->payment_status == 'Pending' ? 'warning' : 'danger')}}">
+                                                {{$sale->payment_status}}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span class="badge badge-{{$sale->order_status == 'delivered' ? 'success' : ($sale->order_status == 'processing' ? 'primary' : 'secondary')}}">
+                                                {{$sale->order_status}}
+                                            </span>
+                                        </td>
+                                        <td>{{$sale->payment_type ?? 'N/A'}}</td>
+                                    </tr>
+                                    @empty
+                                    <tr>
+                                        <td colspan="7" class="text-center py-4">
+                                            <i class="fas fa-shopping-cart" style="font-size: 48px; color: #ddd;"></i>
+                                            <h5 class="mt-2">No sales data available</h5>
+                                            <p class="text-muted">Sales data will appear here as orders are placed.</p>
+                                        </td>
+                                    </tr>
+                                    @endforelse
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <!-- Payment Methods Tab -->
+                    <div class="tab-pane fade" id="payment-methods" role="tabpanel">
+                        <div class="row">
+                            @foreach($salesAnalytics['payment_methods'] as $method)
+                            <div class="col-md-4 mb-3">
+                                <div class="card">
+                                    <div class="card-body text-center">
+                                        <h5>{{$method->payment_type ?? 'Unknown'}}</h5>
+                                        <h3 class="text-primary">{{$method->count}}</h3>
+                                        <p class="text-muted">Orders</p>
+                                        <h4 class="text-success">৳{{number_format($method->revenue, 2)}}</h4>
+                                        <small class="text-muted">Revenue</small>
+                </div>
+            </div>
+                            </div>
+                            @endforeach
+                        </div>
+                    </div>
+                    
+                    <!-- Order Status Tab -->
+                    <div class="tab-pane fade" id="order-status" role="tabpanel">
+                        <div class="row">
+                            @foreach($salesAnalytics['order_statuses'] as $status)
+                            <div class="col-md-3 mb-3">
+                                <div class="card">
+                                    <div class="card-body text-center">
+                                        <h5 class="text-capitalize">{{$status->order_status}}</h5>
+                                        <h3 class="text-primary">{{$status->count}}</h3>
+                                        <p class="text-muted">Orders</p>
+                                        <h4 class="text-success">৳{{number_format($status->revenue, 2)}}</h4>
+                                        <small class="text-muted">Revenue</small>
+                                    </div>
+                                </div>
+                            </div>
+                            @endforeach
+                        </div>
+                    </div>
+                    
+                    <!-- Top Products Tab -->
+                    <div class="tab-pane fade" id="top-products" role="tabpanel">
                 <div class="table-responsive">
-                    <table class="table table-hover mb-0">
+                            <table class="table table-hover">
                         <thead class="thead-light">
                             <tr>
                                 <th>Rank</th>
                                 <th>Product</th>
-                                <th>Views</th>
-                                <th>Clicks</th>
-                                <th>Cart Adds</th>
-                                <th>Sales</th>
+                                        <th>Units Sold</th>
                                 <th>Revenue</th>
-                                <th>Rating</th>
-                                <th>Actions</th>
+                                        <th>Avg Price</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @forelse($topProducts as $index => $product)
+                                    @foreach($salesAnalytics['top_selling_products'] as $index => $product)
                                 <tr>
                                     <td>
-                                        @if($index < 3)
-                                            <span class="badge badge-{{$index == 0 ? 'warning' : ($index == 1 ? 'secondary' : 'success')}}">
+                                            <span class="badge badge-{{$index < 3 ? 'warning' : 'light'}}">
                                                 #{{$index + 1}}
                                             </span>
-                                        @else
-                                            <span class="badge badge-light">#{{$index + 1}}</span>
-                                        @endif
                                     </td>
+                                        <td>{{$product->title}}</td>
+                                        <td><span class="badge badge-primary">{{$product->units_sold}}</span></td>
+                                        <td><strong>৳{{number_format($product->revenue, 2)}}</strong></td>
+                                        <td>৳{{number_format($product->revenue / $product->units_sold, 2)}}</td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <!-- Customer Analytics Tab -->
+                    <div class="tab-pane fade" id="customer-analytics" role="tabpanel">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="card bg-primary text-white">
+                                    <div class="card-body text-center">
+                                        <h3>{{$salesAnalytics['customer_stats']->unique_customers ?? 0}}</h3>
+                                        <p class="mb-0">Unique Customers</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card bg-success text-white">
+                                    <div class="card-body text-center">
+                                        <h3>৳{{number_format($salesAnalytics['customer_stats']->avg_order_value ?? 0, 2)}}</h3>
+                                        <p class="mb-0">Avg Order Value</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card bg-info text-white">
+                                    <div class="card-body text-center">
+                                        <h3>{{$salesAnalytics['customer_stats']->total_orders ?? 0}}</h3>
+                                        <p class="mb-0">Total Orders</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Product Interactions Tab -->
+                    <div class="tab-pane fade" id="product-interactions" role="tabpanel">
+                        <div class="row mb-4">
+                            <div class="col-md-3">
+                                <div class="card bg-primary text-white">
+                                    <div class="card-body text-center">
+                                        <h3>{{$overallStats['total_views'] ?? 0}}</h3>
+                                        <p class="mb-0">Total Views</p>
+                                        <small>Product page visits</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="card bg-info text-white">
+                                    <div class="card-body text-center">
+                                        <h3>{{$overallStats['total_clicks'] ?? 0}}</h3>
+                                        <p class="mb-0">Total Clicks</p>
+                                        <small>Product interactions</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="card bg-warning text-white">
+                                    <div class="card-body text-center">
+                                        <h3>{{$overallStats['total_cart_adds'] ?? 0}}</h3>
+                                        <p class="mb-0">Cart Adds</p>
+                                        <small>Add to cart actions</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="card bg-secondary text-white">
+                                    <div class="card-body text-center">
+                                        <h3>{{$overallStats['total_wishlist_adds'] ?? 0}}</h3>
+                                        <p class="mb-0">Wishlist Adds</p>
+                                        <small>Wishlist actions</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Top Interacted Products -->
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5 class="card-title mb-0">
+                                            <i class="fas fa-eye"></i> Most Viewed Products
+                                        </h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="table-responsive">
+                                            <table class="table table-sm">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Product</th>
+                                                        <th>Views</th>
+                                                        <th>Clicks</th>
+                                                        <th>Conversion</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach($topProducts as $index => $product)
+                                                    <tr>
                                     <td>
                                         <div class="d-flex align-items-center">
-                                            <img src="{{$product->product->getFeaturedImageUrl()}}" alt="{{$product->product->title}}" 
-                                                 style="width: 40px; height: 40px; object-fit: cover; border-radius: 4px;" 
+                                                                <img src="{{$product->product->getFeaturedImageUrl()}}" 
+                                                                     alt="{{$product->product->title}}" 
+                                                                     style="width: 30px; height: 30px; object-fit: cover; border-radius: 4px;" 
                                                  onerror="this.src='{{asset('public/frontend/images/no-images.jpg')}}'">
                                             <div class="ml-2">
                                                 <strong>{{$product->product->title}}</strong>
@@ -293,53 +533,110 @@ Product Statistics Dashboard
                                             </div>
                                         </div>
                                     </td>
-                                    <td>
-                                        <span class="badge badge-primary">{{$product->views ?? 0}}</span>
+                                                        <td><span class="badge badge-primary">{{$product->views ?? 0}}</span></td>
+                                                        <td><span class="badge badge-info">{{$product->clicks ?? 0}}</span></td>
+                                                        <td>
+                                                            @php
+                                                                $conversionRate = $product->views > 0 ? (($product->total_sales ?? 0) / $product->views) * 100 : 0;
+                                                            @endphp
+                                                            <span class="badge badge-{{$conversionRate > 5 ? 'success' : ($conversionRate > 2 ? 'warning' : 'secondary')}}">
+                                                                {{number_format($conversionRate, 1)}}%
+                                                            </span>
                                     </td>
-                                    <td>
-                                        <span class="badge badge-info">{{$product->clicks ?? 0}}</span>
-                                    </td>
-                                    <td>
-                                        <span class="badge badge-warning">{{$product->cart_adds ?? 0}}</span>
-                                    </td>
-                                    <td>
-                                        <span class="badge badge-success">{{$product->total_sales ?? 0}}</span>
-                                    </td>
-                                    <td>
-                                        <strong>${{number_format($product->total_revenue ?? 0, 2)}}</strong>
-                                    </td>
-                                    <td>
-                                        @if($product->average_rating && $product->average_rating > 0)
+                                                    </tr>
+                                                    @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5 class="card-title mb-0">
+                                            <i class="fas fa-shopping-cart"></i> Most Added to Cart
+                                        </h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="table-responsive">
+                                            <table class="table table-sm">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Product</th>
+                                                        <th>Cart Adds</th>
+                                                        <th>Wishlist</th>
+                                                        <th>Sales</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach($topProducts as $index => $product)
+                                                    <tr>
+                                                        <td>
                                             <div class="d-flex align-items-center">
-                                                <span class="text-warning">
-                                                    @for($i = 1; $i <= 5; $i++)
-                                                        <i class="fas fa-star{{$i <= $product->average_rating ? '' : '-o'}}"></i>
-                                                    @endfor
-                                                </span>
-                                                <small class="ml-1">({{number_format($product->average_rating, 1)}})</small>
+                                                                <img src="{{$product->product->getFeaturedImageUrl()}}" 
+                                                                     alt="{{$product->product->title}}" 
+                                                                     style="width: 30px; height: 30px; object-fit: cover; border-radius: 4px;" 
+                                                                     onerror="this.src='{{asset('public/frontend/images/no-images.jpg')}}'">
+                                                                <div class="ml-2">
+                                                                    <strong>{{$product->product->title}}</strong>
+                                                                    <br>
+                                                                    <small class="text-muted">{{$product->product->sku}}</small>
                                             </div>
-                                        @else
-                                            <span class="text-muted">No ratings</span>
-                                        @endif
+                                                            </div>
                                     </td>
-                                    <td>
-                                        <a href="{{route('admin_statistics_product', $product->id)}}" 
-                                           class="btn btn-outline-primary btn-sm" title="View Details">
-                                            <i class="fas fa-eye"></i>
-                                        </a>
-                                    </td>
+                                                        <td><span class="badge badge-warning">{{$product->cart_adds ?? 0}}</span></td>
+                                                        <td><span class="badge badge-secondary">{{$product->wishlist_adds ?? 0}}</span></td>
+                                                        <td><span class="badge badge-success">{{$product->total_sales ?? 0}}</span></td>
                                 </tr>
-                            @empty
-                                <tr>
-                                    <td colspan="9" class="text-center py-4">
-                                        <i class="fas fa-chart-line" style="font-size: 48px; color: #ddd;"></i>
-                                        <h5 class="mt-2">No statistics available</h5>
-                                        <p class="text-muted">Product statistics will appear here as customers interact with your products.</p>
-                                    </td>
-                                </tr>
-                            @endforelse
+                                                    @endforeach
                         </tbody>
                     </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Interaction Analytics -->
+                        <div class="row mt-4">
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5 class="card-title mb-0">
+                                            <i class="fas fa-chart-line"></i> Interaction Analytics
+                                        </h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <div class="text-center">
+                                                    <h4 class="text-primary">{{$overallStats['total_views'] > 0 ? number_format(($overallStats['total_clicks'] / $overallStats['total_views']) * 100, 1) : 0}}%</h4>
+                                                    <p class="text-muted">Click-through Rate</p>
+                                                    <small>Views to Clicks conversion</small>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="text-center">
+                                                    <h4 class="text-warning">{{$overallStats['total_views'] > 0 ? number_format(($overallStats['total_cart_adds'] / $overallStats['total_views']) * 100, 1) : 0}}%</h4>
+                                                    <p class="text-muted">Cart Add Rate</p>
+                                                    <small>Views to Cart conversion</small>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="text-center">
+                                                    <h4 class="text-success">{{$overallStats['total_views'] > 0 ? number_format(($overallStats['total_units_sold'] / $overallStats['total_views']) * 100, 1) : 0}}%</h4>
+                                                    <p class="text-muted">Purchase Rate</p>
+                                                    <small>Views to Sales conversion</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -351,6 +648,38 @@ Product Statistics Dashboard
 @section('cusjs')
 <!-- Chart.js CDN -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+/* Compact chart styling */
+.card-header.py-2 {
+    padding: 0.5rem 1rem !important;
+}
+
+.card-body.py-2 {
+    padding: 0.5rem 1rem !important;
+}
+
+.card-title {
+    font-size: 0.9rem !important;
+    font-weight: 600 !important;
+}
+
+/* Chart container optimization */
+canvas {
+    max-height: 200px !important;
+}
+
+/* Responsive chart adjustments */
+@media (max-width: 768px) {
+    .card-body.py-2 {
+        padding: 0.25rem 0.5rem !important;
+    }
+    
+    canvas {
+        max-height: 150px !important;
+    }
+}
+</style>
 
 <script>
 // Auto-dismiss alerts
@@ -430,29 +759,36 @@ function initViewsChart() {
         },
         options: {
             responsive: true,
+            maintainAspectRatio: false,
             plugins: {
                 title: {
-                    display: true,
-                    text: 'Performance Over Time'
+                    display: false
                 },
                 legend: {
                     display: true,
-                    position: 'top'
+                    position: 'top',
+                    labels: {
+                        usePointStyle: true,
+                        padding: 8
+                    }
                 }
             },
             scales: {
                 y: {
                     beginAtZero: true,
-                    title: {
-                        display: true,
-                        text: 'Count'
+                    grid: {
+                        display: true
                     }
                 },
                 x: {
-                    title: {
-                        display: true,
-                        text: 'Date'
+                    grid: {
+                        display: false
                     }
+                }
+            },
+            elements: {
+                point: {
+                    radius: 3
                 }
             }
         }
@@ -480,15 +816,31 @@ function initSalesChart() {
         },
         options: {
             responsive: true,
+            maintainAspectRatio: false,
             plugins: {
                 title: {
+                    display: false
+                },
+                legend: {
                     display: true,
-                    text: 'Sales by Category'
+                    position: 'top',
+                    labels: {
+                        usePointStyle: true,
+                        padding: 8
+                    }
                 }
             },
             scales: {
                 y: {
-                    beginAtZero: true
+                    beginAtZero: true,
+                    grid: {
+                        display: true
+                    }
+                },
+                x: {
+                    grid: {
+                        display: false
+                    }
                 }
             }
         }
@@ -501,9 +853,9 @@ function initRevenueChart() {
     window.revenueChart = new Chart(ctx, {
         type: 'doughnut',
         data: {
-            labels: ['Direct Sales', 'Online Sales', 'Wholesale', 'Other'],
+            labels: ['Online Sales', 'COD Sales', 'Pending Sales', 'Other Sales'],
             datasets: [{
-                data: {!! json_encode($chartData['revenue_distribution'] ?? [100, 0, 0, 0]) !!},
+                data: {!! json_encode($chartData['revenue_distribution'] ?? [0, 0, 0, 0]) !!},
                 backgroundColor: [
                     '#FF6384',
                     '#36A2EB',
@@ -514,10 +866,18 @@ function initRevenueChart() {
         },
         options: {
             responsive: true,
+            maintainAspectRatio: false,
             plugins: {
                 title: {
+                    display: false
+                },
+                legend: {
                     display: true,
-                    text: 'Revenue Distribution'
+                    position: 'bottom',
+                    labels: {
+                        usePointStyle: true,
+                        padding: 8
+                    }
                 }
             }
         }
@@ -545,15 +905,26 @@ function initTopProductsChart() {
         },
         options: {
             responsive: true,
+            maintainAspectRatio: false,
             plugins: {
                 title: {
+                    display: false
+                },
+                legend: {
                     display: true,
-                    text: 'Top Products Performance'
+                    position: 'top',
+                    labels: {
+                        usePointStyle: true,
+                        padding: 8
+                    }
                 }
             },
             scales: {
                 r: {
-                    beginAtZero: true
+                    beginAtZero: true,
+                    grid: {
+                        display: true
+                    }
                 }
             }
         }
@@ -656,6 +1027,137 @@ function showNotification(message, type) {
     setTimeout(function() {
         $('.alert').fadeOut();
     }, 3000);
+}
+
+// Export sell report
+function exportSellReport() {
+    var dateFrom = $('#date_from').val();
+    var dateTo = $('#date_to').val();
+    var categoryId = $('#category_id').val();
+    var brandId = $('#brand_id').val();
+    
+    var url = '{{route("admin_statistics_export")}}?' + 
+              'date_from=' + dateFrom + 
+              '&date_to=' + dateTo + 
+              '&category_id=' + categoryId + 
+              '&brand_id=' + brandId + 
+              '&type=sell_report';
+    
+    window.open(url, '_blank');
+    showNotification('Sell report export started!', 'success');
+}
+
+// Print sell report
+function printSellReport() {
+    var printContent = document.getElementById('sellReportTabContent').innerHTML;
+    var originalContent = document.body.innerHTML;
+    
+    document.body.innerHTML = '<h2>Sell Report - {{$dateFrom}} to {{$dateTo}}</h2>' + printContent;
+    window.print();
+    document.body.innerHTML = originalContent;
+    
+    // Reload the page to restore functionality
+    location.reload();
+}
+
+// Smart insights and recommendations
+function generateSmartInsights() {
+    var insights = [];
+    
+    // Check for low performing products
+    var lowPerformers = $('.badge.badge-light').length;
+    if (lowPerformers > 5) {
+        insights.push({
+            type: 'warning',
+            title: 'Low Performance Alert',
+            message: lowPerformers + ' products have low performance metrics. Consider reviewing their pricing or marketing strategy.'
+        });
+    }
+    
+    // Check for high conversion rates
+    var highConversion = $('.conversion-rate').filter(function() {
+        return parseFloat($(this).text()) > 5;
+    }).length;
+    
+    if (highConversion > 0) {
+        insights.push({
+            type: 'success',
+            title: 'High Conversion Products',
+            message: highConversion + ' products have conversion rates above 5%. Consider promoting these products more.'
+        });
+    }
+    
+    // Check for payment method trends
+    var sslOrders = $('.payment-method').filter(function() {
+        return $(this).text().includes('SSL');
+    }).length;
+    
+    var totalOrders = $('.payment-method').length;
+    var sslPercentage = (sslOrders / totalOrders) * 100;
+    
+    if (sslPercentage > 70) {
+        insights.push({
+            type: 'info',
+            title: 'Payment Method Trend',
+            message: sslPercentage.toFixed(1) + '% of orders use SSL Commerz. Consider optimizing the online payment experience.'
+        });
+    }
+    
+    return insights;
+}
+
+// Display smart insights
+function displaySmartInsights() {
+    var insights = generateSmartInsights();
+    
+    if (insights.length > 0) {
+        var insightsHtml = '<div class="alert alert-info mt-3"><h5><i class="fas fa-lightbulb"></i> Smart Insights</h5><ul>';
+        
+        insights.forEach(function(insight) {
+            insightsHtml += '<li class="text-' + insight.type + '"><strong>' + insight.title + ':</strong> ' + insight.message + '</li>';
+        });
+        
+        insightsHtml += '</ul></div>';
+        
+        $('#sellReportTabContent').prepend(insightsHtml);
+    }
+}
+
+// Initialize smart features
+$(document).ready(function() {
+    // Display smart insights after a delay
+    setTimeout(displaySmartInsights, 2000);
+    
+    // Add real-time updates for sell report
+    setInterval(function() {
+        updateSellReportData();
+    }, 60000); // Update every minute
+});
+
+// Update sell report data
+function updateSellReportData() {
+    $.ajax({
+        url: '{{route("admin_statistics_api")}}',
+        method: 'GET',
+        data: {
+            date_from: $('#date_from').val(),
+            date_to: $('#date_to').val(),
+            category_id: $('#category_id').val(),
+            brand_id: $('#brand_id').val()
+        },
+        success: function(response) {
+            if (response.success) {
+                // Update recent sales count
+                var recentSalesCount = response.data.recentSales ? response.data.recentSales.length : 0;
+                $('#recent-sales-tab').html('<i class="fas fa-clock"></i> Recent Sales (' + recentSalesCount + ')');
+                
+                showNotification('Sell report data updated!', 'success');
+            }
+        },
+        error: function() {
+            console.log('Failed to update sell report data');
+        }
+    });
 }
 </script>
 @endsection

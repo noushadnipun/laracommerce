@@ -52,14 +52,7 @@
     </a>
 </li>
 
- <li class="nav-item">
-    <a href="{{route('admin_adminMenu')}}" class="nav-link {{ Request()->routeIs('admin_adminMenu*') ? 'active' : ' ' }}">
-        <i class="nav-icon far fa-dot-circle font-11"></i>
-        <p>
-        Menu
-        </p>
-    </a>
- </li>
+
 
  <li class="nav-item">
     <a href="{{route('admin_media_index')}}" class="nav-link {{ Request()->routeIs('admin_media_index') ? 'active' : ' ' }}">
@@ -69,6 +62,42 @@
         </p>
     </a>
  </li>
+
+<!-- User Management -->
+<li class="nav-item has-treeview {{ Request()->routeIs('admin_users*') || Request()->routeIs('admin_roles*') || Request()->routeIs('admin_permissions*') ? 'menu-open' : ' ' }}">
+    <a href="" class="nav-link {{ Request()->routeIs('admin_users*') || Request()->routeIs('admin_roles*') || Request()->routeIs('admin_permissions*') ? 'active' : ' ' }}">
+        <i class="nav-icon fas fa-users text-sm"></i>
+        <p>User Management<i class="right fas fa-angle-left"></i></p>
+    </a>
+    <ul class="nav nav-treeview">
+        @can('view users')
+        <li class="nav-item">
+            <a href="{{route('admin_users.index')}}" class="nav-link {{ Request()->routeIs('admin_users*') ? 'active' : ' ' }}">
+                <i class="nav-icon far fa-dot-circle font-11"></i>
+                <p>Users</p>
+            </a>
+        </li>
+        @endcan
+        
+        @can('view roles')
+        <li class="nav-item">
+            <a href="{{route('admin_roles.index')}}" class="nav-link {{ Request()->routeIs('admin_roles*') ? 'active' : ' ' }}">
+                <i class="nav-icon far fa-dot-circle font-11"></i>
+                <p>Roles</p>
+            </a>
+        </li>
+        @endcan
+        
+        @can('view permissions')
+        <li class="nav-item">
+            <a href="{{route('admin_permissions.index')}}" class="nav-link {{ Request()->routeIs('admin_permissions*') ? 'active' : ' ' }}">
+                <i class="nav-icon far fa-dot-circle font-11"></i>
+                <p>Permissions</p>
+            </a>
+        </li>
+        @endcan
+    </ul>
+</li>
 
 
 <li class="nav-item has-treeview {{ Request()->routeIs('admin_product*') ? 'menu-open' : ' ' }}">

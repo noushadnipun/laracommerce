@@ -1,0 +1,13 @@
+/* Product Modal extracted styles */
+.elegant-modal-content{border:none;border-radius:20px;box-shadow:0 20px 60px rgba(0,0,0,.3);overflow:hidden;background:linear-gradient(135deg,#fff,#f8f9fa)}
+.elegant-modal-close{position:absolute;top:15px;right:15px;z-index:1050;background:rgba(255,255,255,.9);border:none;border-radius:50%;width:40px;height:40px;display:flex;align-items:center;justify-content:center;font-size:18px;color:#6c757d;transition:all .3s ease;backdrop-filter:blur(10px)}
+.elegant-modal-close:hover{background:#e74c3c;color:#fff;transform:scale(1.1);box-shadow:0 4px 15px rgba(231,76,60,.3)}
+.elegant-modal-close:focus{outline:none;box-shadow:0 0 0 3px rgba(231,76,60,.2)}
+.product_modal_body{padding:30px;background:transparent}
+.wishlistToggle.active,.wishlistToggle.in-wishlist{background:linear-gradient(135deg,#e74c3c,#c0392b)!important;border-color:#e74c3c!important;color:#fff!important}
+.wishlistToggle.active:hover,.wishlistToggle.in-wishlist:hover{background:linear-gradient(135deg,#c0392b,#a93226)!important;border-color:#c0392b!important}
+.wishlistToggle.active span,.wishlistToggle.in-wishlist span{color:#fff!important}
+.compareAdd.active{background:linear-gradient(135deg,#28a745,#20c997)!important;border-color:#28a745!important;color:#fff!important}
+.compareAdd.active span{color:#fff!important}
+
+

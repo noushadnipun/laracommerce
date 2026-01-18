@@ -1,35 +1,28 @@
 <div class="brand_area mb-70">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-12">
-                <div class="section_title text-center mb-50">
-                    <h2>Our Trusted Brands</h2>
-                    <p>Shop from the world's most trusted brands</p>
-                </div>
-                <div class="brand_container owl-carousel">
-                    @php 
-                    $brands = \App\Models\ProductBrand::where('visibility', '1')
-                                                    ->orderBy('created_at', 'DESC')
-                                                    ->limit('20')->get() 
-                    @endphp
-                    
-                    @if($brands->count() > 0)
-                        @foreach($brands as $brand)
-                        <div class="single_brand">
-                            <a href="{{route('frontend_single_product_brand', $brand->slug)}}" title="{{$brand->name}}">
-                                <img src="{{\App\Models\Media::fileLocation($brand->image)}}" 
-                                     alt="{{$brand->name}}">
-                            </a>
-                        </div>
-                        @endforeach
-                    @else
-                        <div class="col-12 text-center">
-                            <p>No brands available at the moment.</p>
-                        </div>
-                    @endif
-                </div>
+    <div class="section_title mb-50">
+        <h2>Our Trusted Brands</h2>
+    </div>
+    <div class="brand_container owl-carousel">
+        @php 
+        $brands = \App\Models\ProductBrand::where('visibility', '1')
+                                        ->orderBy('created_at', 'DESC')
+                                        ->limit('20')->get() 
+        @endphp
+        
+        @if($brands->count() > 0)
+            @foreach($brands as $brand)
+            <div class="single_brand">
+                <a href="{{route('frontend_single_product_brand', $brand->slug)}}" title="{{$brand->name}}">
+                    <img src="{{\App\Models\Media::fileLocation($brand->image)}}" 
+                            alt="{{$brand->name}}">
+                </a>
             </div>
-        </div>
+            @endforeach
+        @else
+            <div class="col-12 text-center">
+                <p>No brands available at the moment.</p>
+            </div>
+        @endif
     </div>
 </div>
 
@@ -55,7 +48,6 @@
 
 .section_title h2 {
     font-size: 2.2rem;
-    font-weight: 600;
     color: #242424;
     margin-bottom: 10px;
     position: relative;
@@ -64,9 +56,8 @@
 .section_title h2::after {
     content: '';
     position: absolute;
-    bottom: -10px;
-    left: 50%;
-    transform: translateX(-50%);
+    bottom: -26px;
+    left: 0;
     width: 50px;
     height: 2px;
     background: #0063d1;

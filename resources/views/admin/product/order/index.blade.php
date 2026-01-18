@@ -213,7 +213,7 @@ Order Management
         
         @if($getAllOrder->hasPages())
         <div class="card-footer">
-            {{ $getAllOrder->links() }}
+            {{ $getAllOrder->links('pagination::bootstrap-5') }}
         </div>
         @endif
     </div>

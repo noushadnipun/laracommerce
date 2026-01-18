@@ -5,6 +5,11 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Helpers\MenuHelper as Menu;
+use App\Models\Product;
+use App\Models\Inventory;
+use App\Models\ProductOrder;
+use App\Models\ProductCategory;
+use App\Models\ProductBrand;
 use DB;
 
 class DashboardController extends Controller
@@ -12,7 +17,43 @@ class DashboardController extends Controller
     //Index
     public function index()
     {
-        return view('admin.index');
+        // Get low stock products
+        $lowStockProducts = Product::whereHas('inventory', function($query) {
+            $query->whereRaw('current_stock <= low_stock_threshold')
+                  ->where('current_stock', '>', 0);
+        })->with(['inventory', 'category', 'brand'])
+          ->join('inventory', 'products.id', '=', 'inventory.product_id')
+          ->orderBy('inventory.current_stock', 'asc')
+          ->select('products.*')
+          ->limit(10)
+          ->get();
+
+        // Get out of stock products
+        $outOfStockProducts = Product::whereHas('inventory', function($query) {
+            $query->where('current_stock', '<=', 0);
+        })->with(['inventory', 'category', 'brand'])
+          ->orderBy('products.title')
+          ->limit(10)
+          ->get();
+
+        // Get inventory statistics
+        $inventoryStats = [
+            'total_products' => Product::count(),
+            'products_with_inventory' => Product::whereHas('inventory')->count(),
+            'low_stock_count' => Product::whereHas('inventory', function($query) {
+                $query->whereRaw('current_stock <= low_stock_threshold')
+                      ->where('current_stock', '>', 0);
+            })->count(),
+            'out_of_stock_count' => Product::whereHas('inventory', function($query) {
+                $query->where('current_stock', '<=', 0);
+            })->count(),
+            'in_stock_count' => Product::whereHas('inventory', function($query) {
+                $query->where('current_stock', '>', 0)
+                      ->whereRaw('current_stock > low_stock_threshold');
+            })->count(),
+        ];
+
+        return view('admin.index', compact('lowStockProducts', 'outOfStockProducts', 'inventoryStats'));
     }
 
     //Menu
