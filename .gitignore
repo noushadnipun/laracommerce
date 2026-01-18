@@ -3,3 +3,6 @@
 /vendor
 /node_modules
 *.zip
+.env
+*.sql
+/database/*.sql
