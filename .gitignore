@@ -1,0 +1,12 @@
+/vendor
+/.env
+storage/logs/
+.idea/
+node_modules/
+*.zip
+*.tar.gz
+.DS_Store
+/database.sqlite
+/public/storage
+/public/hot
+/database/*.sql 
